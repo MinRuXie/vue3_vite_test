@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
-
-// 匯入 pinia
-import { createPinia } from 'pinia'
-
 import App from './App.vue'
 // import './index.css'
 
-import router from './router/index.js'
+// 匯入 pinia
+import { createPinia } from 'pinia';
+
+// 匯入 router
+import router from './router/index.js';
 
 // 匯入 Bootstrap 5
 // https://hackmd.io/@chinggo/rkyqvjGtd

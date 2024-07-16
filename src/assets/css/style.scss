@@ -1,7 +1,6 @@
-.admin {
-  background-color: #eee;
-}
+//----------------------
+//    style.scss
+//----------------------
 
-fieldset {
-  margin-bottom: 0.5rem;
-}
+@import './base/global';
+@import './components/nav';

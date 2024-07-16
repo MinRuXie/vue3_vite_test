@@ -63,7 +63,7 @@ export default {
                     
                     username: data.userAccount,
                     password: data.userPassword,
-                    expiresInMins: 30, // optional, defaults to 60
+                    expiresInMins: 2, // optional, defaults to 60
                 })
             })
             .then(res => {
@@ -71,6 +71,7 @@ export default {
                 if (!res.ok) {
                     // throw new Error("HTTP status " + res.status);
                     data.isFailure = true;
+                    console.log('登入失敗');
                 }
                 return res.json();
             })
@@ -81,11 +82,12 @@ export default {
                 store.user_name = `${json.firstName} ${json.lastName}`;
 
                 // 將登入資料存入 session
-                sessionStorage.setItem("id", json.id);
                 sessionStorage.setItem("refreshToken", json.refreshToken);
                 sessionStorage.setItem("token", json.token);
 
                 console.log('目前登入者為', store.user_name);
+                alert('登入成功');
+                console.log('登入成功');
 
                 // 跳轉至主頁
                 router.push('/admin/home/');

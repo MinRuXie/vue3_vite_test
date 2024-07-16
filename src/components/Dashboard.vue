@@ -1,7 +1,7 @@
 <template>
     <h1>歡迎光臨</h1>
 
-    <router-link to="/admin/login">登入</router-link>
+    <router-link to="/admin/login" class="btn btn-primary">登入</router-link>
 </template>
 <script>
 

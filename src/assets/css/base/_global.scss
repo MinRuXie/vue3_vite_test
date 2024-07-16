@@ -1,0 +1,16 @@
+//----------------------
+//    _global.scss
+//----------------------
+
+.admin {
+    background-color: #fafafa;
+
+    .admin-home {
+        min-height: calc(100vh - 4rem);
+        padding: 1.875rem;
+    }
+}
+
+fieldset {
+    margin-bottom: 0.5rem;
+}
