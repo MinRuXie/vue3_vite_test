@@ -24,7 +24,7 @@ export default defineConfig({
   },
 
   // 部屬到 Github Page 設定倉庫路徑
-  // base: process.env.NODE_ENV === 'production' ? '/joy-toys/' : './',
+  // base: process.env.NODE_ENV === 'production' ? '/vue3_vite_test_demo/' : './',
 
   // 清除 console 警告訊息: Feature flag __VUE_PROD_HYDRATION_MISMATCH_DETAILS__ is not explicitly defined. You are running the esm-bundler build of Vue, which expects these compile-time feature flags to be globally injected via the bundler config in order to get better tree-shaking in the production bundle.
   // https://blog.csdn.net/cg_ssh/article/details/135396904
