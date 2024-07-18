@@ -15,6 +15,40 @@
     }
 }
 
+.login-inner {
+    padding: 3.75rem;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        fieldset {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        button {
+            align-self: baseline;
+        }
+
+        label {
+
+            &.required {
+                &::after {
+                    content: '*';
+                    color: red;
+                }
+            }
+        }
+
+        span[role="alert"] {
+            color: red;
+        }
+    }
+
+}
+
 
 
 fieldset {

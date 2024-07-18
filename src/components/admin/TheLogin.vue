@@ -6,23 +6,56 @@
             <div class="row">
                 <div class="col-12">
                     <div class="login-inner">
-                        <h3>Login</h3>
 
-                        <fieldset>
-                            <label for="user-account">帳號</label>
-                            <input type="text" v-model="data.userAccount">
-                        </fieldset>
+                        <!-- 阻止預設表單提交行為, 使用 onSubmit 來處理 -->
+                        <!-- <form novalidate @submit.prevent="onSubmit"> -->
 
-                        <fieldset>
-                            <label for="user-account">密碼</label>
-                            <input type="password" v-model="data.userPassword">
-                        </fieldset>
+                        <!-- 1. Replace <form> with <Form /> 
+                            but remove both the .prevent modifier and the novalidate attribute. -->
+                        <Form @submit="onSubmit">
 
-                        <div v-show="data.isFailure" class="text-danger">登入失敗！帳號或密碼錯誤</div>
-                        <div v-show="data.isLoading" class="text-info">登入中...請稍後!</div>
-                        
-                        <button @click="submit">Login</button>
+                            <h3>Login</h3>
 
+                            <fieldset>
+                                <label for="username" class="required">帳號</label>
+
+                                <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
+                                <!-- <input type="text" v-model="formData.username"> -->
+                                <Field type="text" 
+                                    id="username"
+                                    name="username"
+                                    placeholder="請輸入帳號"
+                                    v-model="formData.username" 
+                                    :rules="validateRequired" 
+                                />
+
+                                <!-- 3. Add the <ErrorMessage /> component to your template, 
+                                    passing a name prop that matches the <Field /> name prop -->
+                                <ErrorMessage name="username" />
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="password" class="required">密碼</label>
+
+                                <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
+                                <!-- <input type="password" v-model="formData.password"> -->
+                                <Field type="password" 
+                                    id="password" 
+                                    name="password"
+                                    placeholder="請輸入密碼"
+                                    v-model="formData.password"
+                                    :rules="validateRequired" 
+                                />
+
+                                <!-- 3. Add the <ErrorMessage /> component to your template, 
+                                    passing a name prop that matches the <Field /> name prop -->
+                                    <ErrorMessage name="password" />
+                            </fieldset>
+                            
+                            <!-- <button @click="userStore.login(formData)" class="btn btn-primary">Login</button> -->
+
+                            <button class="btn btn-primary">登入</button>
+                        </form>
 
                     </div>
                 </div>
@@ -34,72 +67,58 @@
 </template>
 <script>
 import { reactive } from 'vue';
-import { useLoginStore } from '@/stores/login';
-import { useRouter } from "vue-router";
+import { useUserStore } from '@/stores/user';
+
+// 匯入 VeeValidate Component
+import { Form, Field, ErrorMessage } from 'vee-validate';
+
 
 export default {
     name: 'TheLogin',
+    components: {
+        Form,
+        Field,
+        ErrorMessage,
+    },
     setup() {
 
-        const store = useLoginStore();  // Store
-        const router = useRouter(); // 路由
+        const userStore = useUserStore();  // Store
 
-        let data = reactive({
-            userAccount: 'emilys',
-            userPassword: 'emilyspass',
-            isFailure: false,
-            isLoading: false,
+        // 表單資料
+        let formData = reactive({
+            username: 'emilys',
+            password: 'emilyspass',
         })
 
-        // 登入
-        function submit() {
-            data.isLoading = true;
+        
+        // 送出表單資料 (當 <Form> 中的 <Field> 有 :rule 不通過時, 不會執行此方法 )
+        function onSubmit(values) {
+            console.log('Submitted', values);
+            console.log(JSON.stringify(values, null, 2));
 
-            // 使用 username + password 取得 token
-            fetch('https://dummyjson.com/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    
-                    username: data.userAccount,
-                    password: data.userPassword,
-                    expiresInMins: 2, // optional, defaults to 60
-                })
-            })
-            .then(res => {
-                console.log(res.status); // Will show you the status
-                if (!res.ok) {
-                    // throw new Error("HTTP status " + res.status);
-                    data.isFailure = true;
-                    console.log('登入失敗');
-                }
-                return res.json();
-            })
-            .then(json => {
-                console.log(json);
+            // 傳送表單資料 進行登入驗證
+            userStore.login(formData);
+        }
 
-                // 把資料存入 store
-                store.user_name = `${json.firstName} ${json.lastName}`;
+        // 驗證表單必填欄位
+        function validateRequired(value) {
+            // if the field is empty
+            if (!value) {
+                console.log(value, 'This field is required');
+                return 'This field is required';
+            }
 
-                // 將登入資料存入 session
-                sessionStorage.setItem("refreshToken", json.refreshToken);
-                sessionStorage.setItem("token", json.token);
-
-                console.log('目前登入者為', store.user_name);
-                alert('登入成功');
-                console.log('登入成功');
-
-                // 跳轉至主頁
-                router.push('/admin/home/');
-            });
+            // All is good
+            return true;
         }
 
 
-
         return {
-            data,
+            formData,
+            userStore,
 
-            submit,
+            onSubmit,
+            validateRequired,
         }
     }
 }

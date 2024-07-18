@@ -13,18 +13,15 @@ import router from './router/index.js';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
-// 匯入 AJAX Request 攔截器
-import './hook/useToken.js';
 
-// 全局設定 AJAX Request 攔截器 (interceptor)
-axios.interceptors.request.use(async function (config) {
-    const token = sessionStorage.getItem('token');
-    config.headers.Authorization = `Bearer ${token}`;
-  
-    return config
-}, function (error) {
-    return Promise.reject(error)
-})
+// 匯入 axios
+import axios from 'axios';
+import VueAxios from 'vue-axios';  // 可以解決 RangeError: Maximum call stack size exceeded 錯誤
+
+// 匯入 Axios 攔截器
+import './hook/useAxiosInterceptors.js';
+
+
 
 
 // 創建 pinia 實例
@@ -34,6 +31,7 @@ const pinia = createPinia();
 const app = createApp(App);
 
 
+app.use(VueAxios, axios);  // 使用 VueAxios, axios
 app.use(pinia);     // 使用 pinia
 app.use(router);    // 使用 router
 app.mount('#app');  // 掛載 app
