@@ -1,8 +1,15 @@
 # Vue3 Vite 串 DummyJSON 練習
-* https://dummyjson.com/
+* 資料來源：https://dummyjson.com/
+* 表單驗證：https://vee-validate.logaretm.com/v4/
+* Vue 狀態管理：https://pinia.vuejs.org/zh/
+* 串接 API 工具：https://axios-http.com/
+    * [Vue 3 JWT Refresh Token with Axios example](https://github.com/bezkoder/vue-3-jwt-refresh-token)
+    * axios 攔截器：[[Web] 以 axios 實踐前端 refresh token 機制](https://dotblogs.com.tw/wasichris/2020/10/25/223728#google_vignette)
+* Vue3 核心：https://cn.vuejs.org/
+    * [一文看懂vue3中setup()和 ＜script setup＞＜script＞的区别](https://blog.csdn.net/u013505589/article/details/122718376)
+    * [Vue3 如何用 defineModel 實作 props/ emit 的父子元件傳值，讓傳值變得更方便簡單](https://muki.tw/vmodel-definemodel-props-emit/#google_vignette)
 
-## 參考
-* [Vue 3 JWT Refresh Token with Axios example](https://github.com/bezkoder/vue-3-jwt-refresh-token)
+
 
 ## 頁面
 * 會員中心

@@ -3,25 +3,25 @@
 
     <router-link to="/admin/login" class="btn btn-primary">登入</router-link>
 
-
-    <!-- <TestChild v-model="title" /> -->
+    <!-- Parent 組件 -->
+    <TheParent />
 
 </template>
 <script>
-// import TestChild from './TestChild.vue';
+import TheParent from './TheParent.vue';
 
 export default {
     name: 'Dashboard',
     components: {
-        // TestChild
+        TheParent
     },
 
     setup() {
-        // let title = "Hello";
+        
 
 
         return {
-            // title
+            
         }
     }
 }
