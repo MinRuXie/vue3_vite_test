@@ -10,9 +10,15 @@ const router = createRouter({
 
     routes: [
         {
-            path: '/',
+            path: '/', // dynamic segments start with a colon
             name: 'index', // 首頁
             component: () => import('../components/Dashboard.vue'),
+            redirect: { path: '/post/1' }, // 導向文章列表第一頁
+        },
+        {
+            path: '/post/:page',
+            name: 'post',  // 文章
+            component: () => import('../components/PostView.vue'),
         },
         {
             path: '/admin',

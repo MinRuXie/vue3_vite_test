@@ -6,16 +6,17 @@ import axios from 'axios';
 
 // 創建一個 Store, 使用 Setup 函数定義
 export const useUserStore = defineStore('user', () => {
-    const router = useRouter(); // 路由
+    const router = useRouter(); // 路由器
 
     // 資料 (state): data
-    const username = ref('');  // 使用者名稱
-    const userId = ref('');
-    const userGender = ref('');
-    const userEmail = ref('');
-    const userImage = ref('');
-    const userFirstName = ref('');
-    const userLastName = ref('');
+    const username = ref(null);  // 使用者名稱
+    const userId = ref(null);
+    const userGender = ref(null);
+    const userEmail = ref(null);
+    const userImage = ref(null);
+    const userFirstName = ref(null);
+    const userLastName = ref(null);
+    const isLogin = ref(false);
 
     // 計算屬性 (getter): computed
     const userFullName = computed(()=>{
@@ -57,6 +58,7 @@ export const useUserStore = defineStore('user', () => {
             userImage.value = data.image;
             userFirstName.value = data.firstName;
             userLastName.value = data.lastName;
+            isLogin.value = true;
 
             alert('登入成功');
             router.push('/admin/home/');  // 跳轉至主頁
@@ -72,11 +74,21 @@ export const useUserStore = defineStore('user', () => {
     function logOut() {
         console.log('登出成功');
 
+        // 將 store 資料清除
+        username.value = null;
+        userId.value = null;
+        userGender.value = null;
+        userEmail.value = null;
+        userImage.value = null;
+        userFirstName.value = null;
+        userLastName.value = null;
+        isLogin.value = false;
+
         // 將登入資料從 session 清除
         sessionStorage.clear();
 
-        // 跳轉至登入頁
-        router.push('/admin/login/');
+        // 跳轉至首頁
+        router.push('/');
 
         alert('登出成功');
     }
@@ -107,6 +119,7 @@ export const useUserStore = defineStore('user', () => {
             userImage.value = data.image;
             userFirstName.value = data.firstName;
             userLastName.value = data.lastName;
+            isLogin.value = true;
         })
         .catch(function (error) {
             console.log('使用 token 確認登入者身分 失敗', error);
@@ -123,6 +136,7 @@ export const useUserStore = defineStore('user', () => {
         userFirstName,
         userLastName,
         userFullName,
+        isLogin,
 
         login,
         logOut,

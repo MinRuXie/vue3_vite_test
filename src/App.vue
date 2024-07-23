@@ -1,6 +1,8 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-  <!-- <HelloWorld msg="Hello Vue 3.0 + Vite" /> -->
+
+  <!-- Nav -->
+  <AppNav />
 
   <div class="wrapper">
     <!-- 根據路由決定顯示的組件 -->
@@ -9,15 +11,12 @@
 
 </template>
 
-<script>
-// import HelloWorld from './components/HelloWorld.vue'
+<script setup>
 
-export default {
-  name: 'App',
-  components: {
-    // HelloWorld
-  }
-}
+// components
+import AppNav from './components/AppNav.vue'
+
+
 </script>
 
 <style lang="scss">

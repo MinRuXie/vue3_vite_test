@@ -51,8 +51,7 @@
         </div>
     </section>
     
-    <!-- <router-link to="/admin/home/account-modify" class="btn btn-primary">編輯</router-link> -->
-        
+
     <!-- userData: <pre>{{ userData }}</pre> -->
 
 </template>

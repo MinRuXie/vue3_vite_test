@@ -1,15 +1,34 @@
 <template>
-    <h1>歡迎光臨</h1>
 
-    <router-link to="/admin/login" class="btn btn-primary">登入</router-link>
+    <div class="dashboard">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="dashboard-inner">
+
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    
+
+    
 
     <!-- Parent 組件 -->
-    <TheParent />
+    <!-- <TheParent /> -->
 
 </template>
 
 <script setup>
-import TheParent from './TheParent.vue';
+
+// components
+// import TheParent from './TheParent.vue';
 
 
 </script>
