@@ -6,12 +6,7 @@
     </div>
 
 </template>
-<script>
 
-export default {
-    name: 'TheAdmin',
-    setup() {
-        
-    }
-}
+<script setup>
+
 </script>

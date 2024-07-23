@@ -47,11 +47,14 @@ function setNumber(value) {
 }
 
 
-// 子組件元素
+// 子組件傳給父組件的資料
 const refChild = ref(null);
 
 function printChild() {
+    // 子組件
     console.log('refChild.value', refChild.value);
+
+    // 子組件對外暴露的資料
     console.log('refChild.value.refTitle', refChild.value.refTitle);
 }
 

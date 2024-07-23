@@ -8,7 +8,6 @@ import axios from 'axios';
 export const useUserStore = defineStore('user', () => {
     const router = useRouter(); // 路由
 
-
     // 資料 (state): data
     const username = ref('');  // 使用者名稱
     const userId = ref('');
@@ -113,7 +112,6 @@ export const useUserStore = defineStore('user', () => {
             console.log('使用 token 確認登入者身分 失敗', error);
         });
     }
-
 
 
     return {

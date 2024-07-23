@@ -24,6 +24,7 @@
                                 <Field type="text" 
                                     id="username"
                                     name="username"
+                                    class="form-control"
                                     placeholder="請輸入帳號"
                                     v-model="formData.username" 
                                     :rules="validateRequired" 
@@ -42,6 +43,7 @@
                                 <Field type="password" 
                                     id="password" 
                                     name="password"
+                                    class="form-control"
                                     placeholder="請輸入密碼"
                                     v-model="formData.password"
                                     :rules="validateRequired" 
@@ -55,7 +57,7 @@
                             <!-- <button @click="userStore.login(formData)" class="btn btn-primary">Login</button> -->
 
                             <button class="btn btn-primary">登入</button>
-                        </form>
+                        </Form>
 
                     </div>
                 </div>
@@ -65,61 +67,45 @@
     
 
 </template>
-<script>
+
+<script setup>
 import { reactive } from 'vue';
+
+// stores
 import { useUserStore } from '@/stores/user';
 
 // 匯入 VeeValidate Component
 import { Form, Field, ErrorMessage } from 'vee-validate';
 
 
-export default {
-    name: 'TheLogin',
-    components: {
-        Form,
-        Field,
-        ErrorMessage,
-    },
-    setup() {
 
-        const userStore = useUserStore();  // Store
+const userStore = useUserStore();  // Store
 
-        // 表單資料
-        let formData = reactive({
-            username: 'emilys',
-            password: 'emilyspass',
-        })
-
-        
-        // 送出表單資料 (當 <Form> 中的 <Field> 有 :rule 不通過時, 不會執行此方法 )
-        function onSubmit(values) {
-            console.log('Submitted', values);
-            console.log(JSON.stringify(values, null, 2));
-
-            // 傳送表單資料 進行登入驗證
-            userStore.login(formData);
-        }
-
-        // 驗證表單必填欄位
-        function validateRequired(value) {
-            // if the field is empty
-            if (!value) {
-                console.log(value, 'This field is required');
-                return 'This field is required';
-            }
-
-            // All is good
-            return true;
-        }
+// 表單資料
+let formData = reactive({
+    username: 'emilys',
+    password: 'emilyspass',
+})
 
 
-        return {
-            formData,
-            userStore,
+// 送出表單資料 (當 <Form> 中的 <Field> 有 :rule 不通過時, 不會執行此方法 )
+function onSubmit(values) {
+    console.log('Submitted', values);
+    console.log(JSON.stringify(values, null, 2));
 
-            onSubmit,
-            validateRequired,
-        }
+    // 傳送表單資料 進行登入驗證
+    userStore.login(formData);
+}
+
+// 驗證表單必填欄位
+function validateRequired(value) {
+    // if the field is empty
+    if (!value) {
+        console.log(value, 'This field is required');
+        return 'This field is required';
     }
+
+    // All is good
+    return true;
 }
 </script>

@@ -7,22 +7,9 @@
     <TheParent />
 
 </template>
-<script>
+
+<script setup>
 import TheParent from './TheParent.vue';
 
-export default {
-    name: 'Dashboard',
-    components: {
-        TheParent
-    },
 
-    setup() {
-        
-
-
-        return {
-            
-        }
-    }
-}
 </script>

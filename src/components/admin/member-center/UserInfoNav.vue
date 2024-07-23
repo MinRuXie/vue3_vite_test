@@ -15,18 +15,12 @@
 
 </template>
 
-<script>
+<script setup>
 import { useUserStore } from '@/stores/user';
 
-export default {
-    name: 'TheNavigation',
-    setup() {
-        const userStore = useUserStore();  // Store
+
+const userStore = useUserStore();  // Store
 
 
-        return {
-            userStore,
-        }
-    }
-}
+        
 </script>

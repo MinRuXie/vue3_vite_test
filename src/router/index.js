@@ -2,8 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import { useUserStore } from '@/stores/user';
 
-import axios from 'axios';
-
 
 // VUE 3 課程筆記 (八) Vue Router
 // https://hackmd.io/@vanCS/ByuzU-rcs
@@ -33,7 +31,7 @@ const router = createRouter({
                 {
                     path: 'home',
                     name: 'home', // 會員中心
-                    component: () => import('../components/admin/member-center/TheHome.vue'),
+                    component: () => import('../components/admin/member-center/UserInfo.vue'),
                     redirect: { name: 'account' },
                     meta: {
                         requiresAuth: true,  // 需登入
@@ -42,7 +40,7 @@ const router = createRouter({
                         {
                             path: 'account',
                             name: 'account',  // 展示資訊
-                            component: () => import('../components/admin/member-center/user/UserInfo.vue'),
+                            component: () => import('../components/admin/member-center/UserInfoView.vue'),
                             meta: {
                                 requiresAuth: true,  // 需登入
                             },
@@ -50,7 +48,7 @@ const router = createRouter({
                         {
                             path: 'account-modify',
                             name: 'account-modify',  // 修改資訊
-                            component: () => import('../components/admin/member-center/user/UserInfoModify.vue'),
+                            component: () => import('../components/admin/member-center/UserInfoModify.vue'),
                             meta: {
                                 requiresAuth: true,  // 需登入
                             },
