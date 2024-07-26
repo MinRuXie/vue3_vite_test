@@ -12,8 +12,7 @@
                         </template>
                         <template v-if="loadingStatus">
                             <p>
-                                共 {{ postsCount }} 篇文章, 共 {{ pageCount }} 頁<br>
-                                目前為第 {{ currentPage }} 頁, 顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + 10 }} 篇
+                                目前為第 {{ currentPage }} 頁, 顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + 10 }} 篇, 共 {{ postsCount }} 篇文章
                             </p>
                             
                             <!-- posts list -->
@@ -21,8 +20,9 @@
                                 <li v-for="(post, postIndex) in postsData" :key="postIndex"
                                     class="list-group-item d-flex justify-content-between align-items-start">
                                     <div class="ms-2 me-auto">
-                                        <div class="fw-bold">{{ post.title }}</div>
-                                        UserID: {{ post.userId }}
+                                        <div class="fw-bold">
+                                            <router-link :to="`/post-detail/${post.id}`">{{ post.title }}</router-link>
+                                        </div>
                                     </div>
                                     <div class="tags-wrap">
                                         <span v-for="(tag, tagIndex) in post.tags" :key="tagIndex" 
@@ -32,53 +32,11 @@
                             </ol>
 
                             <!-- paginative -->
-                            <nav aria-label="Page navigation example" class="pagination-wrap">
-                                <ul class="pagination">
-                                    <li class="page-item" 
-                                        :class="{
-                                            'disabled': +currentPage === 1
-                                        }">
-                                        <router-link :to="`/post/${currentPage-1 >= 1 ? currentPage-1 : 1}`" class="page-link">Previous</router-link>
-                                    </li>
-
-                                    <!-- <template v-if="+currentPage === 1"> -->
-                                        
-                                        <!-- <li v-if="currentPage-1 <= +pageCount" class="page-item">
-                                            <router-link :to="`/post/${currentPage-1}`" class="page-link">{{ currentPage-1 }}</router-link>
-                                        </li>
-                                        <li v-if="currentPage-2 <= +pageCount" class="page-item">
-                                            <router-link :to="`/post/${currentPage-2}`" class="page-link">{{ currentPage-2 }}</router-link>
-                                        </li> -->
-                                        <li class="page-item">
-                                            <a class="page-link active" aria-current="page" href="#">{{ currentPage }}</a>
-                                        </li>
-                                        <!-- <li v-if="currentPage+1 <= +pageCount" class="page-item">
-                                            <router-link :to="`/post/${currentPage+1}`" class="page-link">{{ currentPage+1 }}</router-link>
-                                        </li>
-                                        <li v-if="currentPage+2 <= +pageCount" class="page-item">
-                                            <router-link :to="`/post/${currentPage+2}`" class="page-link">{{ currentPage+2 }}</router-link>
-                                        </li> -->
-                                    <!-- </template>
-                                    <template v-else-if="+currentPage === +pageCount">
-                                        最後一頁
-                                    </template>
-                                    <template v-else>
-                                        其他頁
-                                    </template> -->
-
-                                    <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-
-                                    
-                                    <li class="page-item" 
-                                        :class="{
-                                            'disabled': +currentPage === +pageCount
-                                        }">
-                                        <router-link :to="`/post/${+currentPage+1 <= +pageCount ? +currentPage+1 : +pageCount}`" class="page-link">Next</router-link>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <PostPagination
+                                :postsCount="postsCount"
+                                :postsCountOfPage="postsCountOfPage"
+                                :currentPage="currentPage"
+                            />
 
                         </template>
 
@@ -95,70 +53,48 @@
 
 import { ref, computed, watch, onMounted } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
+
+// components
+import PostPagination from './PostPagination.vue';
 
 const route = useRoute();  // 路由
 
+// 元素
+const refPavination = ref(null);
 
+
+// 文章相關
 const loadingStatus = ref(false); // 載入狀態
+const currentPage = ref(+route.params.page); // 目前頁碼 (路由參數 page (從1開始))
+const postsCountOfPage = ref(10);  // 一頁顯示幾篇文章 (API request)
 
-const postsData = ref(null);
-const postsCount = ref(null);  // 文章總數
-const postsCountOfPage = ref(10);  // 一頁顯示幾篇
-
-const pageCount = computed(()=>{
-    return Math.ceil(postsCount.value / postsCountOfPage.value); // 總頁數
-})
-
-const currentPage = ref(route.params.page); // 路由參數 page (從1開始)
-
-// 監視 路由參數 page
-watch(
-  () => route.params.page,
-  (newValue, oldValue) => {
-    // react to route changes...
-    currentPage.value = newValue;
-
-    getPostsData();  // 取得資料
-  }
-)
-
-
+// 文章資料 起始索引 (從0開始) (API request)
 const currentStartIndex = computed(()=>{
-    return (currentPage.value - 1) * postsCountOfPage.value;  // 起始索引 (從0開始)
+    return (currentPage.value - 1) * postsCountOfPage.value;
 })
 // page 1: 0~9
 // page 2: 10~19
 // page 3: 20~29
 // 依此類推...
 
-// const currentPagination = computed(()=>{
-//     // 假設有10頁,一次顯示五頁按鈕
-//     // [1] 2 3 4 5
-//     // 1 [2] 3 4 5
-//     // 1 2 [3] 4 5
-//     // 2 3 [4] 5 6
-//     // 3 4 [5] 6 7
-//     // ...
-//     // 6 7 8 9 [10]
-//     let tempArr = [];
+const postsData = ref(null);   // 文章資料 (API response)
+const postsCount = ref(null);  // 文章總數 (API response)
 
-//     // tempArr.push(currentPage); // 目前頁面
-    
-//     // if ( +currentPage === 1 ) {
-//     //     // 第一頁
-//     //     for(let ) {
 
-//     //     }
 
-//     // } else if () {
+// 監視 路由參數 page
+watch(
+  () => route.params.page,
+  (newValue, oldValue) => {
+    // react to route changes...
+    currentPage.value = +newValue;
 
-//     // } else {
+    getPostsData();  // 取得資料
+  }
+)
 
-//     // }
-    
-//     return [];  // 目前顯示頁碼
-// })
+
 
 
 
@@ -173,7 +109,7 @@ function getPostsData() {
         const data = response.data;
 
         postsData.value = data.posts;
-        postsCount.value = data.total;
+        postsCount.value = +data.total;
         loadingStatus.value = true;
     })
     .catch(function (error) {
@@ -181,6 +117,8 @@ function getPostsData() {
         alert('取得失敗');
     });
 }
+
+
 
 
 onMounted(()=>{

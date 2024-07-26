@@ -29,6 +29,34 @@
     }
 }
 
+.post-wrap {
+    margin: 50px 0 140px;
+
+    .post-inner-wrap {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        row-gap: 3.75rem;
+
+        .post-header {
+
+        }
+
+        .post-content {
+            margin: 3.75rem 0 5rem;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            column-gap: 2.5rem;
+        }
+        
+    }
+}
+
 
 .admin {
     background-color: #fafafa;

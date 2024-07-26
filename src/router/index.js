@@ -21,6 +21,11 @@ const router = createRouter({
             component: () => import('../components/PostView.vue'),
         },
         {
+            path: '/post-detail/:id',
+            name: 'post-detail',
+            component: () => import('../components/PostDetailView.vue'),
+        },
+        {
             path: '/admin',
             name: 'admin', // 後台
             component: () => import('../components/admin/TheAdmin.vue'),
