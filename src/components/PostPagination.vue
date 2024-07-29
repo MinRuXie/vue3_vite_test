@@ -1,5 +1,9 @@
 <template>
 
+    <p class="mt-2">
+        目前為第 {{ currentPage }} 頁, 顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + postsCountOfPage }} 篇, 共 {{ postsCount }} 篇文章
+    </p>
+
     <nav aria-label="Page navigation example" class="pagination-wrap">
         <ul class="pagination">
             <li class="page-item" 
@@ -41,6 +45,7 @@ const props = defineProps({
     postsCount: Number,   // 文章總數
     currentPage: Number,  // 目前頁數
     postsCountOfPage: Number,  // 每頁顯示幾篇文章
+    currentStartIndex: Number,  // 目前起始文章索引
 })
 
 // 分頁總頁數

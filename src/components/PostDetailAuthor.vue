@@ -1,6 +1,6 @@
 <template>
 
-    <section>
+    <section class="author-section">
         <h3>Author</h3>
         <template v-if="!userLoadingStatus">
             作者資料載入中...

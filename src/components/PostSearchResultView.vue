@@ -1,4 +1,5 @@
 <template>
+    
 
     <div class="post-view">
 
@@ -6,92 +7,65 @@
             <div class="row">
                 <div class="col-12">
                     <div class="post-view-inner">
-                        <h2>All Posts</h2>
+                        <h2>Keyword: {{ keyword }}</h2>
 
                         <template v-if="!loadingStatus">
                             載入文章列表中...
                         </template>
                         <template v-if="loadingStatus">
-                            
+                            <p>共 {{ postsCount }} 篇搜尋結果 (API上限30篇)</p>
+
                             <!-- posts list -->
                             <PostList 
                                 :postsData="postsData"
                             />
-                            
-                            <!-- paginative -->
-                            <PostPagination
-                                :postsCount="postsCount"
-                                :postsCountOfPage="postsCountOfPage"
-                                :currentPage="currentPage"
-                                :currentStartIndex="currentStartIndex"
-                            />
-
                         </template>
 
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
+
+    
 
 </template>
 
 <script setup>
-
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 
 // components
 import PostList from './PostList.vue';
-import PostPagination from './PostPagination.vue';
+
 
 const route = useRoute();  // 路由
 
-// 元素
-// const refPavination = ref(null);
+const keyword = ref(route.params.keyword); // 路由參數 keyword
 
-
-// 文章相關
 const loadingStatus = ref(false); // 載入狀態
-const currentPage = ref(+route.params.page); // 目前頁碼 (路由參數 page (從1開始))
-const postsCountOfPage = ref(15);  // 一頁顯示幾篇文章 (API request)
-
-// 文章資料 起始索引 (從0開始) (API request)
-const currentStartIndex = computed(()=>{
-    return (currentPage.value - 1) * postsCountOfPage.value;
-})
-// page 1: 0~9
-// page 2: 10~19
-// page 3: 20~29
-// 依此類推...
-
 const postsData = ref(null);   // 文章資料 (API response)
 const postsCount = ref(null);  // 文章總數 (API response)
 
 
-
 // 監視 路由參數 page
 watch(
-  () => route.params.page,
+  () => route.params.keyword,
   (newValue, oldValue) => {
     // react to route changes...
-    currentPage.value = +newValue;
+    keyword.value = newValue;
 
     getPostsData();  // 取得資料
   }
 )
 
 
-
-
-
-// 取得資料
 function getPostsData() {
     axios({
-        method: 'get', // put(替換資源)、patch(更換資源部分內容)
-        url: `https://dummyjson.com/posts?limit=${postsCountOfPage.value}&skip=${currentStartIndex.value}`,
+        method: 'get',
+        url: `https://dummyjson.com/posts/search?q=${keyword.value}`,
     })
     .then(function (response) {
         console.log('取得成功', response);
@@ -111,11 +85,10 @@ function getPostsData() {
 
 
 onMounted(()=>{
-    console.log('onMounted');
 
-    getPostsData();  // 取得資料
+    getPostsData();
 })
 
 
 
-</script> 
+</script>

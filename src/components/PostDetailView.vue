@@ -11,8 +11,9 @@
                             文章資料載入中...
                         </article>
 
+                        <!-- 文章內容 -->
                         <article v-if="postsLoadingStatus">
-        
+
                             <header class="post-header">
                                 <h1>{{ postData.title }}</h1>
                                 <div class="tags-wrap">
@@ -29,6 +30,7 @@
                                 <span>dislikes: {{ postData.reactions.dislikes }}</span>
                                 <span>views: {{ postData.views }}</span>
                             </footer>
+                            
 
                             <!-- 作者 -->
                             <PostDetailAuthor
@@ -36,16 +38,11 @@
                             />
 
                             <!-- 評論 -->
-                            <PostDetailComments />
+                            <PostDetailComments 
+                                :postId="postData.id"
+                            />
                         </article>
 
-                        
-
-                        
-
-                        
-                       
-                        
                     </div>
                 </div>
             </div>
@@ -105,7 +102,7 @@ function getPostData() {
 async function getData() {
     await getPostData();
     // await getUserData();
-    await getCommentsData();
+    // await getCommentsData();
 }
 
 

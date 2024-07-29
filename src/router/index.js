@@ -26,6 +26,11 @@ const router = createRouter({
             component: () => import('../components/PostDetailView.vue'),
         },
         {
+            path: '/post-search/:keyword',
+            name: 'post-search',
+            component: () => import('../components/PostSearchResultView.vue'),
+        },
+        {
             path: '/admin',
             name: 'admin', // 後台
             component: () => import('../components/admin/TheAdmin.vue'),
@@ -185,33 +190,75 @@ router.beforeEach(async (to, from, next) => {
     // }
     // #endregion
 
+    const userStore = useUserStore();  // Store
 
     // 檢查頁面是否需登入 (axios 版本)
-    if ( to.meta.requiresAuth ) {
-        console.log('進入權限頁面')
+    // #region
+    // if ( to.meta.requiresAuth ) {
+    //     console.log('進入權限頁面');
 
-        const userStore = useUserStore();  // Store
+    //     // 1. 檢查是否有 token
+    //     let token = sessionStorage.getItem("token");
 
-        // 1. 檢查是否有 token
-        let token = sessionStorage.getItem("token");
-
-        // 有 token
-        if ( token ) {
+    //     // 有 token
+    //     if ( token ) {
             
-            // 檢查登入狀態
-            await userStore.checkLoginStatus();
+    //         // 檢查登入狀態
+    //         await userStore.checkLoginStatus();
 
-            next();
-        }
-        // 無 token
-        else {
-            alert('非法入侵，請登入系統方可瀏覽');
-            router.push('/admin/login/'); // 跳轉至登入頁
-        }
+    //         next();
+    //     }
+    //     // 無 token
+    //     else {
+    //         alert('非法入侵，請登入系統方可瀏覽');
+    //         router.push('/admin/login/'); // 跳轉至登入頁
+    //     }
+    // } else {
+    //     next();
+    // }
+    // #endregion
 
-    } else {
+
+    // 1. 檢查是否有 token
+    let token = sessionStorage.getItem("token");
+
+    // 有 token
+    if ( token ) {
+        
+        // 檢查登入狀態
+        await userStore.checkLoginStatus();
+
         next();
     }
+
+    // 無 token
+    else {
+
+        // 後台 (一定要登入)
+        if ( to.meta.requiresAuth ) {
+            console.log('非法入侵，請登入系統方可瀏覽');
+            alert('非法入侵，請登入系統方可瀏覽');
+            router.push('/admin/login/'); // 跳轉至登入頁
+
+        // 前台 (不一定要登入)
+        } else {
+            next();
+        }
+    }
+
+
+
+
+    /*
+        頁面種類
+
+        1. 前台 (不一定要登入)
+            - meta.requiresAuth = false
+
+        2. 後台 (一定要登入)
+            - meta.requiresAuth = true
+    
+    */
 
 
     // next();

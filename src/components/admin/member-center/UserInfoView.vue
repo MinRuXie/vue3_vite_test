@@ -2,7 +2,7 @@
 
     <section>
         <header class="section-header">
-            <h4>帳戶資訊</h4>
+            <h4>我的帳號</h4>
             <router-link to="/admin/home/account-modify" class="btn btn-primary">修改資訊</router-link>
         </header>
         
@@ -28,7 +28,7 @@
 
     <section>
         <header class="section-header">
-            <h4>文章列表</h4>
+            <h4>我的文章</h4>
             
         </header>
         
@@ -42,7 +42,8 @@
                     <span>共{{ postsData.total }}篇</span>
                     <ul class="list-group list-group-flush">
                         <li v-for="(item, index) of postsData.posts" :key="index" class="list-group-item">
-                            {{ item.title }} --- 瀏覽:{{ item.views }}次 / 喜歡:{{ item.reactions.likes }}人 / 不喜歡: {{ item.reactions.dislikes }}人
+                            <router-link :to="`/post-detail/${item.id}`">{{ item.title }}</router-link>
+                            瀏覽:{{ item.views }}次 / 喜歡:{{ item.reactions.likes }}人 / 不喜歡: {{ item.reactions.dislikes }}人
                         </li>
                     </ul>
                 </template>

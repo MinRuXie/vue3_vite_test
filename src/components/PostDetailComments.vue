@@ -1,6 +1,6 @@
 <template>
 
-    <section>
+    <section class="comment-section">
         <h3>Comments</h3>
         <template v-if="!commentsLoadingStatus">
             評論資料載入中...
@@ -9,29 +9,99 @@
             <div class="card">
                 <div class="card-body">
                     <ul class="list-group list-group-flush comment-wrap">
-                        <template v-if="commentsData.comments.length <= 0">
+                        <template v-if="commentsData.length <= 0">
                             目前沒有評論
                         </template>
-                        <template v-if="commentsData.comments.length > 0">
+                        <template v-if="commentsData.length > 0">
                             <li class="list-group-item" 
-                                v-for="(item, index) in commentsData.comments" :key="index">
+                                v-for="(item, index) in commentsData" :key="index">
 
-                                <div class="fw-bold mb-2 mt-2">{{ item.user.username }}</div>
+                                <!-- username -->
+                                <div class="fw-bold mb-2 mt-2">
+                                    {{ item.user.username }}
+                                    <span v-if="item.user.username == userStore.username" class="text-info">(You)</span>
+                                </div>
+
+                                <!-- comment -->
                                 <p class="m-0">{{ item.body }}</p>
+
+                                <!-- likes -->
                                 <div class="text-end">likes: {{ item.likes }}</div>
+
                             </li>
                         </template>
                     </ul>
                 </div>
             </div>
         </template>
+        
+        <div class="card mt-2">
+            <div class="card-body">
+                <h4>我要評論</h4>
+
+                <template v-if="!userStore.isLogin">
+                    <p>登入方可留言!</p>
+                    <router-link to="/admin/login" class="btn btn-primary">登入</router-link>
+                </template>
+                <template v-if="userStore.isLogin">
+                    <Form @submit="onSubmit">
+
+                        <fieldset>
+                            <div class="fw-bold mb-2 mt-2">{{ userStore.username }}</div>
+                            <Field as="textarea" 
+                                name="description" 
+                                id="description" 
+                                rows="4" 
+                                placeholder="請輸入評論..." 
+                                class="form-control" 
+                                v-model="formData.body"
+                                :rules="validateRequired" 
+                            />
+                            
+                            <ErrorMessage name="description" />
+                        </fieldset>
+
+                        <button class="btn btn-primary" :disabled="statusAdding">送出評論</button>
+                        <span v-show="statusAdding">評論中...請稍後</span>
+                    </Form>
+                </template>
+
+                
+            </div>
+        </div>
+
     </section>
 
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import axios from 'axios';
+
+// 匯入 VeeValidate Component
+import { Form, Field, ErrorMessage } from 'vee-validate';
+
+// stores
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();  // Store
+
+// 接收 props 的資料
+const props = defineProps({
+    postId: Number
+})
+
+
+
+// 表單資料
+let formData = reactive({
+    body: '',
+    postId: props.postId,
+    userId: userStore.userId,
+})
+
+const statusAdding = ref(false);
+
 
 const commentsData = ref(null);  // 評論資料
 const commentsLoadingStatus = ref(false); // 評論資料載入狀態
@@ -41,13 +111,13 @@ const commentsLoadingStatus = ref(false); // 評論資料載入狀態
 function getCommentsData() {
     return axios({
         method: 'get',
-        url: `https://dummyjson.com/posts/${postData.value.id}/comments`,
+        url: `https://dummyjson.com/posts/${props.postId}/comments`,
     })
     .then(function (response) {
         console.log('取得成功', response);
         const data = response.data;
 
-        commentsData.value = data;
+        commentsData.value = data.comments;
         commentsLoadingStatus.value = true;
 
         console.log('commentsData.value', commentsData.value);
@@ -62,5 +132,58 @@ function getCommentsData() {
 onMounted(()=>{
     getCommentsData();
 })
+
+
+
+// 送出表單資料 (當 <Form> 中的 <Field> 有 :rule 不通過時, 不會執行此方法 )
+function onSubmit(values) {
+    console.log('Submitted', values);
+    console.log(JSON.stringify(values, null, 2));
+
+    statusAdding.value = true;
+
+    // Add a new comment
+    axios({
+        method: 'post', // put(替換資源)、patch(更換資源部分內容)
+        url: `https://dummyjson.com/comments/add`,
+        headers: { 'Content-Type': 'application/json' },
+        data: formData,
+    })
+    .then(function (response) {
+        console.log('新增成功', response);
+        alert('新增成功! (測試用API不會更新資料至資料庫，跳轉至別頁後恢復原始資料)');
+        const data = response.data;
+
+
+        // 將 新增資料 加入 現有資料
+        commentsData.value.push({ ...data, likes: 0 });
+
+       // 清空輸入框
+       formData.body = '';
+       statusAdding.value = false;
+            
+    })
+    .catch(function (error) {
+        console.log('新增失敗', error);
+        alert('新增失敗，資料錯誤');
+        statusAdding.value = false;
+    });
+}
+
+// 驗證表單必填欄位
+function validateRequired(value) {
+    // if the field is empty
+    if (!value) {
+        console.log(value, 'This field is required');
+        return 'This field is required';
+    }
+
+    // All is good
+    return true;
+}
+
+
+
+
 
 </script>

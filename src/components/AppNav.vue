@@ -7,10 +7,14 @@
                 <router-link to="/">DummyJSON 練習</router-link>
             </h1>
 
+            <!-- posts search bar -->
+            <PostSearchBar />
+
             <div class="user-info">
 
                 <template v-if="userStore.isLogin">
-                    <span>Hello, {{ userStore.userFullName }}!</span>
+                    <span>Hello, <router-link to="/admin/home">{{ userStore.userFullName }}</router-link>!</span>
+                    
                     <button @click="userStore.logOut" class="btn btn-primary">登出</button>
                 </template>
 
@@ -29,6 +33,9 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user';
+
+// components
+import PostSearchBar from './PostSearchBar.vue';
 
 
 const userStore = useUserStore();  // Store

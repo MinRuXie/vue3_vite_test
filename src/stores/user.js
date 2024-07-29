@@ -88,7 +88,10 @@ export const useUserStore = defineStore('user', () => {
         sessionStorage.clear();
 
         // 跳轉至首頁
-        router.push('/');
+        // router.push('/');
+
+        // 重整頁面
+        location.reload();
 
         alert('登出成功');
     }
