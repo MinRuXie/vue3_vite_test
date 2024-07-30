@@ -13,7 +13,7 @@ const router = createRouter({
             path: '/', // dynamic segments start with a colon
             name: 'index', // 首頁
             component: () => import('../components/Dashboard.vue'),
-            redirect: { path: '/post' },
+            // redirect: { path: '/post' },
             meta: { title: '首頁' },
         },
         {
@@ -42,7 +42,12 @@ const router = createRouter({
                 },
             ]
         },
-        
+        {
+            path: '/author',
+            name: 'author',
+            component: () => import('../components/AuthorView.vue'),
+            meta: { title: '作者' },
+        },
         {
             path: '/admin',
             name: 'admin', // 後台
