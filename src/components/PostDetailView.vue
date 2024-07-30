@@ -1,52 +1,43 @@
 <template>
 
-    <div class="post-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="post-inner-wrap">
-                        <router-link :to="`/post/1`">返回文章列表</router-link>
-                        
-                        <article v-if="!postsLoadingStatus">
-                            文章資料載入中...
-                        </article>
+    <div class="post-detail">
+    
+        <article v-if="!postsLoadingStatus">
+            文章資料載入中...
+        </article>
 
-                        <!-- 文章內容 -->
-                        <article v-if="postsLoadingStatus">
+        <!-- 文章內容 -->
+        <article v-if="postsLoadingStatus">
 
-                            <header class="post-header">
-                                <h1>{{ postData.title }}</h1>
-                                <div class="tags-wrap">
-                                    <span v-for="(tag, tagIndex) in postData.tags" :key="tagIndex" class="badge text-bg-primary rounded-pill">{{ tag }}</span>
-                                </div>
-                            </header>
-
-                            <div class="post-content">
-                                {{ postData.body }}
-                            </div>
-
-                            <footer class="post-footer">
-                                <span>likes: {{ postData.reactions.likes }}</span>
-                                <span>dislikes: {{ postData.reactions.dislikes }}</span>
-                                <span>views: {{ postData.views }}</span>
-                            </footer>
-                            
-
-                            <!-- 作者 -->
-                            <PostDetailAuthor
-                                :userId="postData.userId"
-                            />
-
-                            <!-- 評論 -->
-                            <PostDetailComments 
-                                :postId="postData.id"
-                            />
-                        </article>
-
-                    </div>
+            <header class="post-header">
+                <h1>{{ postData.title }}</h1>
+                <div class="tags-wrap">
+                    <span v-for="(tag, tagIndex) in postData.tags" :key="tagIndex" class="badge text-bg-primary rounded-pill">{{ tag }}</span>
                 </div>
+            </header>
+
+            <div class="post-content">
+                {{ postData.body }}
             </div>
-        </div>
+
+            <footer class="post-footer">
+                <span>likes: {{ postData.reactions.likes }}</span>
+                <span>dislikes: {{ postData.reactions.dislikes }}</span>
+                <span>views: {{ postData.views }}</span>
+            </footer>
+            
+
+            <!-- 作者 -->
+            <PostDetailAuthor
+                :userId="postData.userId"
+            />
+
+            <!-- 評論 -->
+            <PostDetailComments 
+                :postId="postData.id"
+            />
+        </article>
+     
     </div>
 
 

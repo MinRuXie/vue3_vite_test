@@ -1,0 +1,62 @@
+
+
+.post-sidenav {
+    position: sticky;
+    top: calc(4rem + 50px);
+}
+
+
+.post-wrap {
+    min-height: 100vh;
+    margin: 100px 0 250px;
+
+    // layout
+    .post-view {
+
+    }
+
+    // layout
+    .post-detail {
+        display: flex;
+        flex-direction: column;
+        row-gap: 3.75rem;
+
+        .post-header {
+
+        }
+
+        .post-content {
+            margin: 3.75rem 0 5rem;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            column-gap: 2.5rem;
+        }
+        
+
+        .author-section {
+            margin-top: 3.75rem;
+        }
+
+        .comment-section {
+            margin-top: 3.75rem;
+        }
+        
+    }
+
+
+    .tags-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .pagination-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+}

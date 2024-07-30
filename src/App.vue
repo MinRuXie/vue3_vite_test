@@ -4,7 +4,10 @@
   <!-- Nav -->
   <AppNav />
 
+  
+
   <div class="wrapper">
+    
     <!-- 根據路由決定顯示的組件 -->
     <router-view></router-view>
   </div>
@@ -14,7 +17,7 @@
 <script setup>
 
 // components
-import AppNav from './components/AppNav.vue'
+import AppNav from './components/AppNav.vue';
 
 
 </script>

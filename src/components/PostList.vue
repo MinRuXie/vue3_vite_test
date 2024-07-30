@@ -7,7 +7,7 @@
             class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">
-                    <router-link :to="`/post-detail/${post.id}`">{{ post.title }}</router-link>
+                    <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
                 </div>
             </div>
             <div class="tags-wrap">

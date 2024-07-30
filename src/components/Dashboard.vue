@@ -6,7 +6,7 @@
                 <div class="col-12">
                     <div class="dashboard-inner">
 
-                        
+                        <h2>首頁</h2>
 
                     </div>
                 </div>

@@ -1,14 +1,15 @@
 <template>
 
     <p class="mt-2">
-        目前為第 {{ currentPage }} 頁, 顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + postsCountOfPage }} 篇, 共 {{ postsCount }} 篇文章
+        顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + postsCountOfPage }} 篇, 
+        共 {{ postsCount }} 篇文章
     </p>
 
     <nav aria-label="Page navigation example" class="pagination-wrap">
         <ul class="pagination">
             <li class="page-item" 
                 :class="{ 'disabled': props.currentPage === 1 }">
-                <router-link class="page-link" :to="`/post/${paginationPrev}`">Previous</router-link>
+                <router-link class="page-link" :to="`/post/list/${paginationPrev}`">Previous</router-link>
             </li>
 
             <li class="page-item" 
@@ -18,13 +19,13 @@
                 <router-link aria-current="page" href="#"
                     class="page-link"
                     :class="{ 'active': +item === props.currentPage }"
-                    :to="`/post/${item}`"
+                    :to="`/post/list/${item}`"
                 >{{ item }}</router-link>
             </li>
             
             <li class="page-item" 
                 :class="{ 'disabled': props.currentPage === +pageCount }">
-                <router-link class="page-link" :to="`/post/${paginationNext}`">Next</router-link>
+                <router-link class="page-link" :to="`/post/list/${paginationNext}`">Next</router-link>
             </li>
         </ul>
     </nav>

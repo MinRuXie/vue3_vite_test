@@ -7,8 +7,7 @@
                 <router-link to="/">DummyJSON 練習</router-link>
             </h1>
 
-            <!-- posts search bar -->
-            <PostSearchBar />
+            
 
             <div class="user-info">
 
@@ -34,8 +33,7 @@
 <script setup>
 import { useUserStore } from '@/stores/user';
 
-// components
-import PostSearchBar from './PostSearchBar.vue';
+
 
 
 const userStore = useUserStore();  // Store

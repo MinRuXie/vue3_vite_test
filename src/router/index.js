@@ -13,28 +13,42 @@ const router = createRouter({
             path: '/', // dynamic segments start with a colon
             name: 'index', // 首頁
             component: () => import('../components/Dashboard.vue'),
-            redirect: { path: '/post/1' }, // 導向文章列表第一頁
+            redirect: { path: '/post' },
+            meta: { title: '首頁' },
         },
         {
-            path: '/post/:page',
-            name: 'post',  // 文章
-            component: () => import('../components/PostView.vue'),
+            path: '/post',
+            name: 'post', // 文章
+            component: () => import('../components/PostIndex.vue'),
+            redirect: { path: '/post/list/1' }, // 導向文章列表第一頁
+            children: [
+                {
+                    path: 'list/:page',
+                    name: 'postList',
+                    component: () => import('../components/PostView.vue'),
+                    meta: { title: '文章列表' },
+                },
+                {
+                    path: 'detail/:id',
+                    name: 'postDetail',
+                    component: () => import('../components/PostDetailView.vue'),
+                    meta: { title: '文章內頁' },
+                },
+                {
+                    path: 'search/:keyword',
+                    name: 'postSearch',
+                    component: () => import('../components/PostSearchResultView.vue'),
+                    meta: { title: '搜尋文章' },
+                },
+            ]
         },
-        {
-            path: '/post-detail/:id',
-            name: 'post-detail',
-            component: () => import('../components/PostDetailView.vue'),
-        },
-        {
-            path: '/post-search/:keyword',
-            name: 'post-search',
-            component: () => import('../components/PostSearchResultView.vue'),
-        },
+        
         {
             path: '/admin',
             name: 'admin', // 後台
             component: () => import('../components/admin/TheAdmin.vue'),
             redirect: { name: 'home' },
+            meta: { title: '後台' },
             children: [
                 {
                     path: 'login',
@@ -42,31 +56,35 @@ const router = createRouter({
                     component: () => import('../components/admin/TheLogin.vue'),
                     meta: {
                         requiresAuth: false,  // 不需登入
+                        title: '登入 - 會員中心',
                     }
                 },
                 {
                     path: 'home',
                     name: 'home', // 會員中心
-                    component: () => import('../components/admin/member-center/UserInfo.vue'),
+                    component: () => import('../components/admin/UserInfo.vue'),
                     redirect: { name: 'account' },
                     meta: {
                         requiresAuth: true,  // 需登入
+                        title: '會員中心',
                     },
                     children: [
                         {
                             path: 'account',
                             name: 'account',  // 展示資訊
-                            component: () => import('../components/admin/member-center/UserInfoView.vue'),
+                            component: () => import('../components/admin/UserInfoView.vue'),
                             meta: {
                                 requiresAuth: true,  // 需登入
+                                title: '主頁 - 會員中心',
                             },
                         },
                         {
                             path: 'account-modify',
                             name: 'account-modify',  // 修改資訊
-                            component: () => import('../components/admin/member-center/UserInfoModify.vue'),
+                            component: () => import('../components/admin/UserInfoModify.vue'),
                             meta: {
                                 requiresAuth: true,  // 需登入
+                                title: '修改會員資訊 - 會員中心',
                             },
                         },
                     ]
@@ -85,6 +103,10 @@ const router = createRouter({
 
 // 路由守衛
 router.beforeEach(async (to, from, next) => {
+
+    // 修改網頁 title
+    document.title = to.meta.title || "練習 DummyJSON";
+    
 
     // 檢查頁面是否需登入 (fetch 版本)
     // #region
@@ -246,19 +268,6 @@ router.beforeEach(async (to, from, next) => {
         }
     }
 
-
-
-
-    /*
-        頁面種類
-
-        1. 前台 (不一定要登入)
-            - meta.requiresAuth = false
-
-        2. 後台 (一定要登入)
-            - meta.requiresAuth = true
-    
-    */
 
 
     // next();

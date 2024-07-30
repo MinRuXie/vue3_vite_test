@@ -85,7 +85,8 @@
                     </fieldset>
 
                     <footer class="form-footer">
-                        <button class="btn btn-primary">儲存</button>
+                        <span v-if="editingStatus">儲存中...請稍後</span>
+                        <button class="btn btn-primary" :disabled="editingStatus">儲存</button>
                     </footer>
                 </Form>
 
@@ -102,7 +103,7 @@
 </template>
 
 <script setup>
-import { toRef, toRaw, reactive, onMounted, nextTick } from 'vue';
+import { ref, toRef, toRaw, reactive, onMounted, nextTick } from 'vue';
 import axios from 'axios';  // axios
 
 // 匯入 VeeValidate Component
@@ -113,6 +114,7 @@ import { useUserStore } from '@/stores/user'; // stores
 
 const userStore = useUserStore();  // Store
 
+const editingStatus = ref(false);
 
 
 // 表單資料: 使用 store 的資料作為預設值
@@ -128,7 +130,7 @@ let formData = reactive({
 function onSubmit(values) {
     console.log('Submitted', values);
     console.log(JSON.stringify(values, null, 2));
-
+    editingStatus.value = true;
 
 
     /* updating lastName of user with id */
@@ -140,7 +142,6 @@ function onSubmit(values) {
     })
     .then(function (response) {
         console.log('更新成功', response);
-        alert('更新成功! (測試用API不會更新資料至資料庫，跳轉至別頁後恢復原始資料)');
         const data = response.data;
 
         // 將 更新後的資料 存入 Pinia Store
@@ -148,10 +149,15 @@ function onSubmit(values) {
         userStore.userLastName = data.lastName;
         userStore.userGender = data.gender;
         userStore.userEmail = data.email;
+
+        editingStatus.value = false;
+
+        alert('更新成功! (測試用API不會更新資料至資料庫，跳轉至別頁後恢復原始資料)');
     })
     .catch(function (error) {
         console.log('更新失敗', error);
         alert('更新失敗，資料錯誤');
+        editingStatus.value = false;
     });
 }
 

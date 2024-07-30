@@ -11,60 +11,16 @@
     }
 }
 
-.post-view {
-    min-height: 100vh;
-    margin: 50px 0;
 
-    .tags-wrap {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
+.search-bar-wrap {
 
-    .pagination-wrap {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2rem;
+
+    .search-bar {
+        display: grid;
+        grid-template-columns: 2fr 0.8fr;
+        column-gap: 4px;
     }
 }
-
-.post-wrap {
-    margin: 50px 0 140px;
-
-    .post-inner-wrap {
-        width: 100%;
-        max-width: 720px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        row-gap: 3.75rem;
-
-        .post-header {
-
-        }
-
-        .post-content {
-            margin: 3.75rem 0 5rem;
-        }
-
-        .post-footer {
-            display: flex;
-            align-items: center;
-            column-gap: 2.5rem;
-        }
-        
-
-        .author-section {
-            margin-top: 3.75rem;
-        }
-
-        .comment-section {
-            margin-top: 3.75rem;
-        }
-    }
-}
-
 
 .admin {
     background-color: #fafafa;
@@ -95,6 +51,10 @@
 
     
 
+}
+
+.breadcrumb-wrap {
+    margin-bottom: 3.75rem;
 }
 
 

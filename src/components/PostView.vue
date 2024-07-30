@@ -1,38 +1,27 @@
 <template>
 
     <div class="post-view">
+        <h2>All Posts</h2>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="post-view-inner">
-                        <h2>All Posts</h2>
+        <template v-if="!loadingStatus">
+            載入文章列表中...
+        </template>
+        <template v-if="loadingStatus">
+            
+            <!-- posts list -->
+            <PostList 
+                :postsData="postsData"
+            />
+            
+            <!-- paginative -->
+            <PostListPagination
+                :postsCount="postsCount"
+                :postsCountOfPage="postsCountOfPage"
+                :currentPage="currentPage"
+                :currentStartIndex="currentStartIndex"
+            />
 
-                        <template v-if="!loadingStatus">
-                            載入文章列表中...
-                        </template>
-                        <template v-if="loadingStatus">
-                            
-                            <!-- posts list -->
-                            <PostList 
-                                :postsData="postsData"
-                            />
-                            
-                            <!-- paginative -->
-                            <PostPagination
-                                :postsCount="postsCount"
-                                :postsCountOfPage="postsCountOfPage"
-                                :currentPage="currentPage"
-                                :currentStartIndex="currentStartIndex"
-                            />
-
-                        </template>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+        </template>
     </div>
 
 </template>
@@ -45,7 +34,7 @@ import { useRoute } from 'vue-router';
 
 // components
 import PostList from './PostList.vue';
-import PostPagination from './PostPagination.vue';
+import PostListPagination from './PostListPagination.vue';
 
 const route = useRoute();  // 路由
 

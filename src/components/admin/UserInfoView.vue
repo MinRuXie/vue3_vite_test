@@ -42,7 +42,7 @@
                     <span>共{{ postsData.total }}篇</span>
                     <ul class="list-group list-group-flush">
                         <li v-for="(item, index) of postsData.posts" :key="index" class="list-group-item">
-                            <router-link :to="`/post-detail/${item.id}`">{{ item.title }}</router-link>
+                            <router-link :to="`/post/detail/${item.id}`">{{ item.title }}</router-link>
                             瀏覽:{{ item.views }}次 / 喜歡:{{ item.reactions.likes }}人 / 不喜歡: {{ item.reactions.dislikes }}人
                         </li>
                     </ul>
