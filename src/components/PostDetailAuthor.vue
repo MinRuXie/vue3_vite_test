@@ -20,6 +20,29 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4>Other posts</h4>
+                    
+                    <template v-if="userData.customPostsLoading">
+                        文章資料載入中...
+                    </template>
+                    <template v-if="!userData.customPostsLoading">
+                        <span v-if="userData.customPosts && userData.customPosts.length <= 0">沒有文章資料</span>
+                        <ul v-if="userData.customPosts && userData.customPosts.length > 0">
+                            <li v-for="(post, postIndex) in userData.customPosts" :key="postIndex">
+                                
+                                <template v-if="post.id === props.postId">
+                                    <p>{{ post.title }} <span class="text-info">(This Post)</span></p>
+                                </template>
+                                <template v-else>
+                                    <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
+                                </template>
+                            </li>
+                        </ul>
+                    </template>
+                </div>
+            </div>
         </template>
     </section>
 
@@ -31,6 +54,7 @@ import axios from 'axios';
 // 接收 props 的資料
 const props = defineProps({
     userId: Number,
+    postId: Number,
 })
 
 
@@ -50,7 +74,7 @@ async function getUserData() {
         userData.value = data;
         userLoadingStatus.value = true;
 
-        console.log('userData.value', userData.value);
+        // console.log('userData.value', userData.value);
     })
     .catch(function (error) {
         console.log('取得失敗', error);
@@ -58,8 +82,39 @@ async function getUserData() {
     });
 }
 
-onMounted(()=>{
-    getUserData();
+// 取得 特定使用者的文章資料
+async function getPostsOfUser(user) {
+    console.log('user----', user)
+    return axios({
+        method: 'get',
+        url: `https://dummyjson.com/users/${user.id}/posts`,
+    })
+    .then(function (response) {
+        console.log('取得成功', response);
+        const data = response.data;
+        
+        // 將文章資料塞入對應的作者中
+        user['customPosts'] = data.posts;
+        user['customPostsLoading'] = false;
+    })
+    .catch(function (error) {
+        console.log('取得失敗', error);
+
+    });
+}
+
+// 取得資料的流程控制
+async function getData() {
+    await getUserData();
+
+    getPostsOfUser(userData.value);
+}
+
+
+onMounted(async ()=>{
+    
+    getData();
+
 })
 
 </script>

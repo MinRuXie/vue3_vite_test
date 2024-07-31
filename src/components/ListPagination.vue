@@ -1,15 +1,15 @@
 <template>
 
     <p class="mt-2">
-        顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + postsCountOfPage }} 篇, 
-        共 {{ postsCount }} 篇文章
+        顯示第 {{ currentStartIndex + 1 }} - {{ currentStartIndex + dataCountOfPage }} 筆, 
+        共 {{ dataCount }} 筆資料, 共 {{ pageCount }} 頁
     </p>
 
     <nav aria-label="Page navigation example" class="pagination-wrap">
         <ul class="pagination">
             <li class="page-item" 
                 :class="{ 'disabled': props.currentPage === 1 }">
-                <router-link class="page-link" :to="`/post/list/${paginationPrev}`">Previous</router-link>
+                <router-link class="page-link" :to="`${props.preUrl}/${paginationPrev}`">Previous</router-link>
             </li>
 
             <li class="page-item" 
@@ -19,13 +19,13 @@
                 <router-link aria-current="page" href="#"
                     class="page-link"
                     :class="{ 'active': +item === props.currentPage }"
-                    :to="`/post/list/${item}`"
+                    :to="`${props.preUrl}/${item}`"
                 >{{ item }}</router-link>
             </li>
             
             <li class="page-item" 
                 :class="{ 'disabled': props.currentPage === +pageCount }">
-                <router-link class="page-link" :to="`/post/list/${paginationNext}`">Next</router-link>
+                <router-link class="page-link" :to="`${props.preUrl}/${paginationNext}`">Next</router-link>
             </li>
         </ul>
     </nav>
@@ -43,15 +43,16 @@ import { computed, ref } from 'vue';
 
 // 接收 props
 const props = defineProps({
-    postsCount: Number,   // 文章總數
+    dataCount: Number,   // 資料總筆數
+    dataCountOfPage: Number,  // 每頁顯示幾筆資料
     currentPage: Number,  // 目前頁數
-    postsCountOfPage: Number,  // 每頁顯示幾篇文章
     currentStartIndex: Number,  // 目前起始文章索引
+    preUrl: String,  // 頁碼參數前方的 url
 })
 
 // 分頁總頁數
 const pageCount = computed(()=>{
-    return Math.ceil(props.postsCount / props.postsCountOfPage); 
+    return Math.ceil(props.dataCount / props.dataCountOfPage); 
 })
 
 

@@ -1,0 +1,16 @@
+
+
+.author-wrap {
+    min-height: 100vh;
+    margin: 100px 0 250px;
+
+    .author-view {
+
+
+        .author-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+    }
+}

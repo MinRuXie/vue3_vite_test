@@ -1,71 +1,91 @@
 <template>
 
     <div class="author-view">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="author-list">
-                        <h2>作者</h2>
+        <h2>All Authors</h2>
 
-                        <template v-if="userDataLoading">
-                            作者資料載入中...
-                        </template>
-                        <template v-if="!userDataLoading">
-                            共 {{ userCount }} 位作者, 顯示 {{ showCount }} 位
-                            <ul class="list-group">
-                                <li v-for="(user, index) in userData" :key="index" 
-                                    class="list-group-item">
+        <div class="author-list">
+        
+            <template v-if="userDataLoading">
+                作者資料載入中...
+            </template>
+            <template v-if="!userDataLoading">
+
+                <!-- author list -->
+                <div class="card" v-for="(user, index) in userData" :key="index">
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img :src="user.image" alt="avator" width="50" height="50">
                                     {{ user.username }}<br>
-
-                                    
-                                    <template v-if="user.postsLoading">
+                                </div>
+                                <div class="col-10">
+                                    <template v-if="user.customPostsLoading">
                                         文章資料載入中...
                                     </template>
-                                    <template v-if="!user.postsLoading">
-                                        <span v-if="user.posts && user.posts.length <= 0">沒有文章資料</span>
-                                        <ul v-if="user.posts && user.posts.length > 0">
-                                            <li v-for="(post, postIndex) in user.posts" :key="postIndex">
+                                    <template v-else>
+                                        <span v-if="user.customPosts && user.customPosts.length <= 0">沒有文章資料</span>
+                                        <ul v-if="user.customPosts && user.customPosts.length > 0" class="list-group">
+                                            <li v-for="(post, postIndex) in user.customPosts" :key="postIndex" class="list-group-item">
                                                 <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
                                             </li>
                                         </ul>
                                     </template>
-
-                                </li>
-                            </ul>
-                        </template>
-
-                       
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
-            </div>
+
+
+                <!-- pagination -->
+                <ListPagination
+                    :dataCount="userCount"
+                    :dataCountOfPage="userCountOfPage"
+                    :currentPage="currentPage"
+                    :currentStartIndex="currentStartIndex"
+                    :preUrl="'/author/list'"
+                />
+
+            </template>
+
         </div>
+                
     </div>
 
 </template>
 <script setup>
 
-import { ref, onMounted } from 'vue';
-
+import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 
-// fetch('https://dummyjson.com/users')
-// .then(res => res.json())
-// .then(console.log);
+// components
+import ListPagination from './ListPagination.vue';
+
+const route = useRoute();  // 路由
 
 
 const userDataLoading = ref(true);  // 使用者資料載入狀態
+const currentPage = ref(+route.params.page); // 目前頁碼 (路由參數 page (從1開始))
+const userCountOfPage = ref(8);  // 一頁顯示幾位作者 (API request)
+
+// 使用者資料 起始索引 (從0開始) (API request)
+const currentStartIndex = computed(()=>{
+    return (currentPage.value - 1) * userCountOfPage.value;
+})
+
 const userData = ref(null);   // 使用者資料 (API response)
 const userCount = ref(null);  // 使用者數量 (API response)
 
-const currentStartIndex = ref(0);  // 資料起始索引
-const showCount = ref(10);
 
-// 'https://dummyjson.com/users?limit=5&skip=10&select=firstName,age'
+
+// 取得 使用者資料
 async function getUserData() {
     return axios({
         method: 'get',
-        url: `https://dummyjson.com/users?limit=${showCount.value}&skip=${currentStartIndex.value}`,
+        url: `https://dummyjson.com/users?limit=${userCountOfPage.value}&skip=${currentStartIndex.value}`,
     })
     .then(function (response) {
         console.log('取得成功', response);
@@ -82,6 +102,7 @@ async function getUserData() {
     });
 }
 
+// 取得 特定使用者的文章資料
 async function getPostsOfUser(user) {
     return axios({
         method: 'get',
@@ -92,8 +113,8 @@ async function getPostsOfUser(user) {
         const data = response.data;
         
         // 將文章資料塞入對應的作者中
-        user['posts'] = data.posts;
-        user['postsLoading'] = false;
+        user['customPosts'] = data.posts;
+        user['customPostsLoading'] = false;
     })
     .catch(function (error) {
         console.log('取得失敗', error);
@@ -101,16 +122,33 @@ async function getPostsOfUser(user) {
     });
 }
 
-onMounted(async ()=>{
+// 取得資料的流程控制
+async function getData() {
     await getUserData();
 
-    console.log('***', userData.value)
+    console.log('***', userData.value);
 
     // 遍歷使用者
     userData.value.forEach(user => {
-        user['postsLoading'] = true;
+        user['customPostsLoading'] = true;
         getPostsOfUser(user);
     });
+}
+
+
+// 監視 路由參數 page
+watch(
+  () => route.params.page,
+  (newValue, oldValue) => {
+    // react to route changes...
+    currentPage.value = +newValue;
+
+    getData();
+  }
+)
+
+onMounted(async ()=>{
+    getData()
 })
 
 </script>

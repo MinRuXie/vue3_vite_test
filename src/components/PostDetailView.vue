@@ -30,6 +30,7 @@
             <!-- 作者 -->
             <PostDetailAuthor
                 :userId="postData.userId"
+                :postId="postData.id"
             />
 
             <!-- 評論 -->

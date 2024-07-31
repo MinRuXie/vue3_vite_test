@@ -14,11 +14,12 @@
             />
             
             <!-- paginative -->
-            <PostListPagination
-                :postsCount="postsCount"
-                :postsCountOfPage="postsCountOfPage"
+            <ListPagination
+                :dataCount="postsCount"
+                :dataCountOfPage="postsCountOfPage"
                 :currentPage="currentPage"
                 :currentStartIndex="currentStartIndex"
+                :preUrl="'/post/list'"
             />
 
         </template>
@@ -34,7 +35,7 @@ import { useRoute } from 'vue-router';
 
 // components
 import PostList from './PostList.vue';
-import PostListPagination from './PostListPagination.vue';
+import ListPagination from './ListPagination.vue';
 
 const route = useRoute();  // 路由
 

@@ -21,6 +21,7 @@ const router = createRouter({
             name: 'post', // 文章
             component: () => import('../components/PostIndex.vue'),
             redirect: { path: '/post/list/1' }, // 導向文章列表第一頁
+            meta: { title: '文章' },
             children: [
                 {
                     path: 'list/:page',
@@ -45,8 +46,17 @@ const router = createRouter({
         {
             path: '/author',
             name: 'author',
-            component: () => import('../components/AuthorView.vue'),
+            component: () => import('../components/AuthorIndex.vue'),
             meta: { title: '作者' },
+            redirect: { path: '/author/list/1' }, // 導向作者列表第一頁
+            children: [
+                {
+                    path: 'list/:page',
+                    name: 'authorList',
+                    component: () => import('../components/AuthorView.vue'),
+                    meta: { title: '作者列表' },
+                }
+            ]
         },
         {
             path: '/admin',
@@ -67,7 +77,7 @@ const router = createRouter({
                 {
                     path: 'home',
                     name: 'home', // 會員中心
-                    component: () => import('../components/admin/UserInfo.vue'),
+                    component: () => import('../components/admin/UserInfoIndex.vue'),
                     redirect: { name: 'account' },
                     meta: {
                         requiresAuth: true,  // 需登入
