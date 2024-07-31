@@ -2,8 +2,18 @@
 //    style.scss
 //----------------------
 
-@import './base/global';
-@import './base/post';
-@import './base/author';
 
+// base
+@import './base/global';
+@import './base/layout';
+@import './base/form';
+
+
+// views
+@import './views/login';
+@import './views/post';
+@import './views/author';
+
+
+// components
 @import './components/nav';

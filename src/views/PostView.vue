@@ -7,6 +7,19 @@
             載入文章列表中...
         </template>
         <template v-if="loadingStatus">
+
+            <div class="sort-wrap">
+                <span>Sort By:</span>
+                <fieldset>
+                    <input type="radio" class="btn-check" name="options-sort" id="option5" autocomplete="off" value="asc" v-model="sortOrder" @change="getPostsData">
+                    <label class="btn" for="option5">A-Z</label>
+                </fieldset>
+                <fieldset>
+                    <input type="radio" class="btn-check" name="options-sort" id="option6" autocomplete="off" value="desc" v-model="sortOrder" @change="getPostsData">
+                    <label class="btn" for="option6">Z-A</label>
+                </fieldset>
+            </div>
+            
             
             <!-- posts list -->
             <PostList 
@@ -34,8 +47,8 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 
 // components
-import PostList from './PostList.vue';
-import ListPagination from './ListPagination.vue';
+import PostList from '@/components/PostList.vue';
+import ListPagination from '@/components/ListPagination.vue';
 
 const route = useRoute();  // 路由
 
@@ -57,6 +70,8 @@ const currentStartIndex = computed(()=>{
 // page 3: 20~29
 // 依此類推...
 
+const sortOrder = ref('asc');
+
 const postsData = ref(null);   // 文章資料 (API response)
 const postsCount = ref(null);  // 文章總數 (API response)
 
@@ -64,24 +79,23 @@ const postsCount = ref(null);  // 文章總數 (API response)
 
 // 監視 路由參數 page
 watch(
-  () => route.params.page,
-  (newValue, oldValue) => {
-    // react to route changes...
-    currentPage.value = +newValue;
+    () => route.params.page,
+    (newValue, oldValue) => {
+        // react to route changes...
+        currentPage.value = +newValue;
 
-    getPostsData();  // 取得資料
-  }
+        getPostsData();  // 取得資料
+    }
 )
-
-
 
 
 
 // 取得資料
 function getPostsData() {
     axios({
-        method: 'get', // put(替換資源)、patch(更換資源部分內容)
-        url: `https://dummyjson.com/posts?limit=${postsCountOfPage.value}&skip=${currentStartIndex.value}`,
+        method: 'get',
+        // url: `https://dummyjson.com/posts?limit=${postsCountOfPage.value}&skip=${currentStartIndex.value}`,
+        url: `https://dummyjson.com/posts?limit=${postsCountOfPage.value}&skip=${currentStartIndex.value}&sortBy=title&order=${sortOrder.value}`,
     })
     .then(function (response) {
         console.log('取得成功', response);

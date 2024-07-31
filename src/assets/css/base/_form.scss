@@ -1,0 +1,45 @@
+//----------------------
+//    _form.scss
+//----------------------
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    fieldset {
+        display: grid;
+        grid-template-columns: 8rem 1fr;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+
+        // label
+        label {
+            word-break: break-all;
+    
+            &.required {
+                &::after {
+                    content: '*';
+                    color: red;
+                }
+            }
+        }
+
+        // error msg
+        span[role="alert"] {
+            color: red;
+            grid-area: 2 / 2 / span 1 / span 1;
+        }
+    }
+
+    button {
+        align-self: baseline;
+    }
+
+    .form-footer {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        column-gap: 0.5rem;
+    }
+}

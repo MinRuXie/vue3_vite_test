@@ -1,6 +1,6 @@
 <template>
 
-    <div class="post-detail">
+    <div class="post-detai-view">
     
         <article v-if="!postsLoadingStatus">
             文章資料載入中...
@@ -11,9 +11,11 @@
 
             <header class="post-header">
                 <h1>{{ postData.title }}</h1>
-                <div class="tags-wrap">
-                    <span v-for="(tag, tagIndex) in postData.tags" :key="tagIndex" class="badge text-bg-primary rounded-pill">{{ tag }}</span>
-                </div>
+
+                <!-- post tags -->
+                <PostTagsList
+                    :postTags="postData.tags"
+                />
             </header>
 
             <div class="post-content">
@@ -25,7 +27,6 @@
                 <span>dislikes: {{ postData.reactions.dislikes }}</span>
                 <span>views: {{ postData.views }}</span>
             </footer>
-            
 
             <!-- 作者 -->
             <PostDetailAuthor
@@ -50,18 +51,15 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 
 // components
-import PostDetailAuthor from './PostDetailAuthor.vue';
-import PostDetailComments from './PostDetailComments.vue';
-
+import PostDetailAuthor from '@/components/PostDetailAuthor.vue';
+import PostDetailComments from '@/components/PostDetailComments.vue';
+import PostTagsList from '@/components/PostTagsList.vue';
 
 const route = useRoute();  // 路由
 
 const postId = ref(route.params.id); // 路由參數 id
 const postData = ref(null);  // 文章資料
 const postsLoadingStatus = ref(false); // 文章資料載入狀態
-
-
-
 
 
 
@@ -88,13 +86,8 @@ function getPostData() {
 }
 
 
-
-
-
 async function getData() {
     await getPostData();
-    // await getUserData();
-    // await getCommentsData();
 }
 
 

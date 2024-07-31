@@ -6,7 +6,7 @@
             作者資料載入中...
         </template>
         <template v-if="userLoadingStatus">
-            <div class="card mb-3">
+            <div class="card">
                 <div class="row g-0">
                     <div class="col-md-2">
                         <img :src="userData.image" alt="avator" class="img-fluid rounded-start">
@@ -20,9 +20,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card mt-2">
                 <div class="card-body">
-                    <h4>Other posts</h4>
+                    <h4 class="mb-4">Other Posts</h4>
                     
                     <template v-if="userData.customPostsLoading">
                         文章資料載入中...
@@ -33,7 +33,7 @@
                             <li v-for="(post, postIndex) in userData.customPosts" :key="postIndex">
                                 
                                 <template v-if="post.id === props.postId">
-                                    <p>{{ post.title }} <span class="text-info">(This Post)</span></p>
+                                    {{ post.title }} <span class="text-info">(This Post)</span>
                                 </template>
                                 <template v-else>
                                     <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>

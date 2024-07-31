@@ -1,0 +1,51 @@
+//----------------------
+//    _post.scss
+//----------------------
+
+
+// post side nav
+.post-sidenav {
+    position: sticky;
+    top: calc(4rem + 50px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+// layout
+.post-view {
+
+}
+
+// layout
+.post-detail-view {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3.75rem;
+
+    .post-header {
+
+    }
+
+    .post-content {
+        margin: 3.75rem 0 5rem;
+    }
+
+    .post-footer {
+        display: flex;
+        align-items: center;
+        column-gap: 2.5rem;
+    }
+    
+
+    .author-section {
+        margin-top: 3.75rem;
+    }
+
+    .comment-section {
+        margin-top: 3.75rem;
+    }
+    
+}

@@ -12,48 +12,53 @@ const router = createRouter({
         {
             path: '/', // dynamic segments start with a colon
             name: 'index', // 首頁
-            component: () => import('../components/Dashboard.vue'),
-            // redirect: { path: '/post' },
+            component: () => import('../layouts/Dashboard.vue'),
             meta: { title: '首頁' },
         },
         {
             path: '/post',
             name: 'post', // 文章
-            component: () => import('../components/PostIndex.vue'),
+            component: () => import('../layouts/PostIndex.vue'),
             redirect: { path: '/post/list/1' }, // 導向文章列表第一頁
             meta: { title: '文章' },
             children: [
                 {
                     path: 'list/:page',
                     name: 'postList',
-                    component: () => import('../components/PostView.vue'),
-                    meta: { title: '文章列表' },
+                    component: () => import('../views/PostView.vue'),
+                    meta: { title: '全部-文章列表' },
                 },
                 {
                     path: 'detail/:id',
                     name: 'postDetail',
-                    component: () => import('../components/PostDetailView.vue'),
+                    component: () => import('../views/PostDetailView.vue'),
                     meta: { title: '文章內頁' },
                 },
                 {
-                    path: 'search/:keyword',
+                    path: 'search/:keyword/:page',
                     name: 'postSearch',
-                    component: () => import('../components/PostSearchResultView.vue'),
-                    meta: { title: '搜尋文章' },
+                    component: () => import('../views/PostSearchResultView.vue'),
+                    meta: { title: '關鍵字搜尋-文章列表' },
+                },
+                {
+                    path: 'category/:tag/:page',
+                    name: 'postArchive',
+                    component: () => import('../views/PostArchiveView.vue'),
+                    meta: { title: '分類-文章列表' },
                 },
             ]
         },
         {
             path: '/author',
             name: 'author',
-            component: () => import('../components/AuthorIndex.vue'),
+            component: () => import('../layouts/AuthorIndex.vue'),
             meta: { title: '作者' },
             redirect: { path: '/author/list/1' }, // 導向作者列表第一頁
             children: [
                 {
                     path: 'list/:page',
                     name: 'authorList',
-                    component: () => import('../components/AuthorView.vue'),
+                    component: () => import('../views/AuthorView.vue'),
                     meta: { title: '作者列表' },
                 }
             ]
@@ -61,14 +66,14 @@ const router = createRouter({
         {
             path: '/admin',
             name: 'admin', // 後台
-            component: () => import('../components/admin/TheAdmin.vue'),
+            component: () => import('../layouts/admin/AdminIndex.vue'),
             redirect: { name: 'home' },
             meta: { title: '後台' },
             children: [
                 {
                     path: 'login',
                     name: 'login', // 後台登入
-                    component: () => import('../components/admin/TheLogin.vue'),
+                    component: () => import('../views/admin/LoginView.vue'),
                     meta: {
                         requiresAuth: false,  // 不需登入
                         title: '登入 - 會員中心',
@@ -77,7 +82,7 @@ const router = createRouter({
                 {
                     path: 'home',
                     name: 'home', // 會員中心
-                    component: () => import('../components/admin/UserInfoIndex.vue'),
+                    component: () => import('../layouts/admin/UserInfoIndex.vue'),
                     redirect: { name: 'account' },
                     meta: {
                         requiresAuth: true,  // 需登入
@@ -87,7 +92,7 @@ const router = createRouter({
                         {
                             path: 'account',
                             name: 'account',  // 展示資訊
-                            component: () => import('../components/admin/UserInfoView.vue'),
+                            component: () => import('../views/admin/UserInfoView.vue'),
                             meta: {
                                 requiresAuth: true,  // 需登入
                                 title: '主頁 - 會員中心',
@@ -96,7 +101,7 @@ const router = createRouter({
                         {
                             path: 'account-modify',
                             name: 'account-modify',  // 修改資訊
-                            component: () => import('../components/admin/UserInfoModify.vue'),
+                            component: () => import('../views/admin/UserInfoModifyView.vue'),
                             meta: {
                                 requiresAuth: true,  // 需登入
                                 title: '修改會員資訊 - 會員中心',
@@ -111,7 +116,7 @@ const router = createRouter({
             // 如果沒有就會導到這個 router-link 來
             path: '/:pathMatch(.*)*',
             name: 'not-found',
-            component: () => import('../components/NotFound.vue')
+            component: () => import('../layouts/NotFound.vue')
         },
     ]
 })

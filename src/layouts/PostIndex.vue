@@ -23,8 +23,8 @@
 <script setup>
 
 // components
-import PostSideNav from './PostSideNav.vue';
-import PostBreadcrumb from './PostBreadcrumb.vue';
+import PostSideNav from '@/components/PostSideNav.vue';
+import PostBreadcrumb from '@/components/PostBreadcrumb.vue';
 
 
 </script>

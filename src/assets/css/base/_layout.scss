@@ -1,0 +1,47 @@
+//----------------------
+//    _layout.scss
+//----------------------
+
+
+.wrapper {
+
+}
+
+.dashboard {
+    min-height: 100vh;
+    margin: 100px 0 250px;
+}
+
+.author-wrap {
+    min-height: 100vh;
+    margin: 100px 0 250px;
+}
+
+.post-wrap {
+    min-height: 100vh;
+    margin: 100px 0 250px;
+}
+
+.admin-wrap {
+    background-color: #fafafa;
+
+    .admin-home {
+        min-height: calc(100vh - 4rem);
+        padding: 1.875rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            column-gap: 1.5rem;
+            margin-bottom: 1rem;
+
+            h4 {
+                margin: 0;
+            }
+        }
+    }
+}
