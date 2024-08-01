@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue';
+import { ref, onMounted, watchEffect, computed } from 'vue';
 import axios from 'axios';
 
 import { useRoute } from 'vue-router';
@@ -59,28 +59,14 @@ const postsData = ref(null);   // 文章資料 (API response)
 const postsCount = ref(null);  // 文章總數 (API response)
 
 
-// 監視 路由參數 tag
-watch(
-    () => route.params.tag,
-    (newValue, oldValue) => {
-        // react to route changes...
-        currentTag.value = newValue;
 
-        getPostsOfTag();  // 取得資料
-    }
-)
+// 監視 路由參數
+watchEffect(()=>{
+    currentTag.value = route.params.tag;
+    currentPage.value = +route.params.page;
 
-
-// 監視 路由參數 page
-watch(
-    () => route.params.page,
-    (newValue, oldValue) => {
-        // react to route changes...
-        currentPage.value = +newValue;
-
-        getPostsOfTag();  // 取得資料
-    }
-)
+    getPostsOfTag();  // 取得資料
+})
 
 
 // "https://dummyjson.com/posts/tag/history"

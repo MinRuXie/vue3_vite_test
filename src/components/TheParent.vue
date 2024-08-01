@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 // 匯入組件 (無須註冊, 可直接於模版使用)
 import TheChild from './TheChild.vue';
@@ -49,6 +49,24 @@ function setNumber(value) {
 
 // 子組件傳給父組件的資料
 const refChild = ref(null);
+
+// 注意: 只可以在组件挂载后才能访问模板引用, 使用侦听模板引用 ref 的变化可考虑其值为 null 的情况
+// https://cn.vuejs.org/guide/essentials/template-refs.html#accessing-the-refs
+watchEffect(() => {
+    console.log('refChild.value', refChild.value);
+  
+    // 可以訪問元素了
+    if (refChild.value) {
+        console.log('refChild.value.refTitle', refChild.value.refTitle);
+    
+    // 不能訪問元素
+    } else {
+        // 此时还未挂载，或此元素已经被卸载（例如通过 v-if 控制）
+        console.log('refChild 还未挂载，或此元素已经被卸载');
+    }
+})
+
+
 
 function printChild() {
     // 子組件

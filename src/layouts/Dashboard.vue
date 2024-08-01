@@ -21,14 +21,14 @@
 
 
     <!-- Parent 組件 -->
-    <!-- <TheParent /> -->
+    <TheParent />
 
 </template>
 
 <script setup>
 
 // components
-// import TheParent from './TheParent.vue';
+import TheParent from '@/components/TheParent.vue';
 import NewsCard from '@/components/NewsCard.vue';
 
 
