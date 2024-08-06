@@ -1,24 +1,22 @@
 <template>
 
     <div class="card fancy-border">
+
+        <!-- Header -->
+        <header class="card-header">
+            <slot name="header"></slot>
+        </header>
+
+        <!-- Body -->
         <div class="card-body">
-
-            <!-- Header -->
-            <header>
-                <slot name="header"></slot>
-            </header>
-            
-            <!-- Body -->
-            <main>
-                <slot name="body"></slot>
-            </main>
-
-            <!-- Footer -->
-            <footer>
-                <slot name="footer"></slot>
-            </footer>
-
+            <slot name="body"></slot>
         </div>
+
+        <!-- Footer -->
+        <footer class="card-footer">
+            <slot name="footer"></slot>
+        </footer>
+        
     </div>
 
 
