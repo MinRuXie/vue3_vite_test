@@ -11,6 +11,20 @@
 
 
 
+## API 結果模板
+```html
+<template v-if="error">
+    <p>資料載入失敗!</p>
+</template>
+<template v-else-if="data">
+    <!-- 顯示資料 -->
+</template>
+<template v-else>
+    <p>Loading...</p>
+</template>
+```
+
+
 ## 頁面
 * 會員中心
     * 登入 & 登出 & 路由守衛 (工時預估5天)

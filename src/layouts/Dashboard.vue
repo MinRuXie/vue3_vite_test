@@ -16,16 +16,6 @@
                         <!-- Body slot -->
                         <template v-slot:body>
 
-                            <!-- <template v-if="error">
-                                <p>文章資料載入失敗!</p>
-                            </template>
-                            <template v-else-if="data">
-
-                            </template>
-                            <template v-else>
-                                <p>Loading...</p>
-                            </template> -->
-
                             <template v-if="postsError">
                                 <p>文章資料載入失敗!</p>
                             </template>

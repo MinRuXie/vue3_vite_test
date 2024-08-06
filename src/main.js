@@ -22,8 +22,6 @@ import VueAxios from 'vue-axios';  // 可以解決 RangeError: Maximum call stac
 import './hook/useAxiosInterceptors.js';
 
 
-
-
 // 創建 pinia 實例
 const pinia = createPinia();
 
@@ -31,9 +29,12 @@ const pinia = createPinia();
 const app = createApp(App);
 
 
+// 使用插件
 app.use(VueAxios, axios);  // 使用 VueAxios, axios
 app.use(pinia);     // 使用 pinia
 app.use(router);    // 使用 router
+
+// 安裝
 app.mount('#app');  // 掛載 app
 
 
