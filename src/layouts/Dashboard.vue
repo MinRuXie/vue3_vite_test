@@ -16,23 +16,29 @@
                         <!-- Body slot -->
                         <template v-slot:body>
 
-                            <ul>
-                                <li v-if="postsError">
-                                    文章資料載入失敗!
-                                </li>
+                            <!-- <template v-if="error">
+                                <p>文章資料載入失敗!</p>
+                            </template>
+                            <template v-else-if="data">
 
-                                <template v-else>
+                            </template>
+                            <template v-else>
+                                <p>Loading...</p>
+                            </template> -->
 
-                                    <li v-if="!postsData">
-                                        Loading...
-                                    </li>
-
+                            <template v-if="postsError">
+                                <p>文章資料載入失敗!</p>
+                            </template>
+                            <template v-else-if="postsData">
+                                <ul>
                                     <li v-for="(post, index) in postsData" :key="index">
                                         <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
                                     </li>
-
-                                </template>
-                            </ul>
+                                </ul>
+                            </template>
+                            <template v-else>
+                                <p>Loading...</p>
+                            </template>
 
                         </template>
 
@@ -52,23 +58,18 @@
 
                         <!-- Body slot -->
                         <template v-slot:body>
-                            <ul>
-                                <li v-if="usersError">
-                                    作者資料載入失敗!
-                                </li>
 
-                                <template v-else>
-
-                                    <li v-if="!usersData">
-                                        Loading...
-                                    </li>
-
-                                    <li v-for="(user, index) in usersData" :key="index">
-                                    {{ user.username }}
-                                </li>
-
-                                </template>
-                            </ul>
+                            <template v-if="usersError">
+                                <p>作者資料載入失敗!</p>
+                            </template>
+                            <template v-else-if="usersData">
+                                <ul>
+                                    <li v-for="(user, index) in usersData" :key="index">{{ user.username }}</li>
+                                </ul>
+                            </template>
+                            <template v-else>
+                                <p>Loading...</p>
+                            </template>
 
                         </template>
 

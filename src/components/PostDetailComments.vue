@@ -6,6 +6,33 @@
         <div class="card">
             <div class="card-body">
 
+                <template v-if="commentsError">
+                    <p>評論資料載入失敗!</p>
+                </template>
+                <template v-else-if="commentsData">
+                    <p v-if="commentsData.length <= 0" class="list-group-item">目前沒有評論</p>
+                    <ul v-else class="list-group list-group-flush comment-wrap">
+                        <li class="list-group-item" 
+                            v-for="(item, index) in commentsData" :key="index">
+
+                            <!-- username -->
+                            <div class="fw-bold mb-2 mt-2">
+                                {{ item.user.username }}
+                                <span v-if="item.user.username == userStore.username" class="text-info">(You)</span>
+                            </div>
+
+                            <!-- comment -->
+                            <p class="m-0">{{ item.body }}</p>
+
+                            <!-- likes -->
+                            <div class="text-end">likes: {{ item.likes }}</div>
+                        </li>
+                    </ul>
+                </template>
+                <template v-else>
+                    <p>Loading...</p>
+                </template>
+
                 <ul class="list-group list-group-flush comment-wrap">
                     
                     <li v-if="commentsError" class="list-group-item">評論載入失敗!</li>
@@ -14,24 +41,7 @@
                         <li v-if="!commentsData" class="list-group-item">載入評論中...</li>
                         
                         <template v-else>
-                            <li v-if="commentsData.length <= 0" class="list-group-item">目前沒有評論</li>
-
-                            <li class="list-group-item" 
-                                v-for="(item, index) in commentsData" :key="index">
-
-                                <!-- username -->
-                                <div class="fw-bold mb-2 mt-2">
-                                    {{ item.user.username }}
-                                    <span v-if="item.user.username == userStore.username" class="text-info">(You)</span>
-                                </div>
-
-                                <!-- comment -->
-                                <p class="m-0">{{ item.body }}</p>
-
-                                <!-- likes -->
-                                <div class="text-end">likes: {{ item.likes }}</div>
-
-                            </li>
+                            
                         </template>
                     </template>
                     

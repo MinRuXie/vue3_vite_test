@@ -4,11 +4,11 @@
         <h2>All Authors</h2>
 
         <div class="author-list">
-        
-            <template v-if="userDataLoading">
-                作者資料載入中...
+
+            <template v-if="userError">
+                <p>作者資料載入失敗!</p>
             </template>
-            <template v-if="!userDataLoading">
+            <template v-else-if="userData">
 
                 <!-- author list -->
                 <AuthorList 
@@ -24,6 +24,9 @@
                     :preUrl="'/author/list'"
                 />
 
+            </template>
+            <template v-else>
+                <p>Loading...</p>
             </template>
 
         </div>
@@ -44,7 +47,7 @@ import ListPagination from '@/components/ListPagination.vue';
 const route = useRoute();  // 路由
 
 
-const userDataLoading = ref(true);  // 使用者資料載入狀態
+// const userDataLoading = ref(true);  // 使用者資料載入狀態
 const currentPage = ref(+route.params.page); // 目前頁碼 (路由參數 page (從1開始))
 const userCountOfPage = ref(8);  // 一頁顯示幾位作者 (API request)
 
@@ -55,7 +58,7 @@ const currentStartIndex = computed(()=>{
 
 const userData = ref(null);   // 使用者資料 (API response)
 const userCount = ref(null);  // 使用者數量 (API response)
-
+const userError = ref(null);   // 使用者資料 (API response) Error
 
 
 // 取得 使用者資料
@@ -71,11 +74,11 @@ async function getUserData() {
         userData.value = data.users;
         userCount.value = data.total;
 
-        userDataLoading.value = false;
+        // userDataLoading.value = false;
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-
+        userError.value = error;
     });
 }
 
@@ -91,11 +94,11 @@ async function getPostsOfUser(user) {
         
         // 將文章資料塞入對應的作者中
         user['customPosts'] = data.posts;
-        user['customPostsLoading'] = false;
+        // user['customPostsLoading'] = false;
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-
+        user['customPostsError'] = error;
     });
 }
 

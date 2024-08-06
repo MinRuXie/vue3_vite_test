@@ -9,10 +9,10 @@
                     <div class="post-view-inner">
                         <h2>Keyword: {{ keyword }}</h2>
 
-                        <template v-if="!loadingStatus">
-                            載入文章列表中...
+                        <template v-if="postsError">
+                            <p>文章資料載入失敗!</p>
                         </template>
-                        <template v-if="loadingStatus">
+                        <template v-else-if="postsData">
 
                             <!-- posts list -->
                             <PostList 
@@ -27,6 +27,10 @@
                                 :currentStartIndex="currentStartIndex"
                                 :preUrl="`/post/search/${keyword}`"
                             />
+
+                        </template>
+                        <template v-else>
+                            <p>Loading...</p>
                         </template>
 
                     </div>
@@ -62,10 +66,10 @@ const currentStartIndex = computed(()=>{
     return (currentPage.value - 1) * postsCountOfPage.value;
 })
 
-const loadingStatus = ref(false); // 載入狀態
+// const loadingStatus = ref(false); // 載入狀態
 const postsData = ref(null);   // 文章資料 (API response)
 const postsCount = ref(null);  // 文章總數 (API response)
-
+const postsError = ref(null);   // 文章資料 (API response) Error
 
 
 // 監視 路由參數
@@ -88,11 +92,13 @@ function getPostsData() {
 
         postsData.value = data.posts;
         postsCount.value = +data.total;
-        loadingStatus.value = true;
+        // loadingStatus.value = true;
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-        alert('取得失敗');
+        // alert('取得失敗');
+
+        postsError.value = error;
     });
 }
 

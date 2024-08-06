@@ -34,18 +34,26 @@
         
         <div class="card">
             <div class="card-body">
-                
-                <template v-if="!postsData">
-                    載入中...
+
+                <template v-if="postsError">
+                    <p>文章資料載入失敗!</p>
                 </template>
-                <template v-if="postsData">
-                    <span>共{{ postsData.total }}篇</span>
-                    <ul class="list-group list-group-flush">
-                        <li v-for="(item, index) of postsData.posts" :key="index" class="list-group-item">
-                            <router-link :to="`/post/detail/${item.id}`">{{ item.title }}</router-link>
-                            瀏覽:{{ item.views }}次 / 喜歡:{{ item.reactions.likes }}人 / 不喜歡: {{ item.reactions.dislikes }}人
-                        </li>
-                    </ul>
+                <template v-else-if="postsData">
+                    
+                    <p v-if="postsData.length<=0">沒有文章資料</p>
+                    <template v-else>
+                        <span>共{{ postsData.total }}篇</span>
+                        <ul class="list-group list-group-flush">
+                            <li v-for="(item, index) of postsData.posts" :key="index" class="list-group-item">
+                                <router-link :to="`/post/detail/${item.id}`">{{ item.title }}</router-link>
+                                瀏覽:{{ item.views }}次 / 喜歡:{{ item.reactions.likes }}人 / 不喜歡: {{ item.reactions.dislikes }}人
+                            </li>
+                        </ul>
+                    </template>
+                    
+                </template>
+                <template v-else>
+                    <p>Loading...</p>
                 </template>
 
             </div>
@@ -70,11 +78,12 @@ const userStore = useUserStore();  // Store
 
 // Vue 3 - Fetch Data from an API
 // https://jasonwatmore.com/vue-3-fetch-data-from-an-api
-let postsData = ref(null); // API資料是非同步回傳, 必須用響應式接住
+
+const postsData = ref(null);   // API資料是非同步回傳, 必須用響應式接住
+const postsError = ref(null);  // 載入失敗
 
 
-onMounted(()=>{
-
+function getPostsData() {
     /* getting posts of user with id */
     axios({
         method: 'get',
@@ -89,7 +98,13 @@ onMounted(()=>{
     })
     .catch(function (error) {
         console.log('使用 userId 取得文章資料 失敗', error);
-
+        postsError.value = error;
     });
+}
+
+
+onMounted(()=>{
+
+    getPostsData();
 })
 </script>

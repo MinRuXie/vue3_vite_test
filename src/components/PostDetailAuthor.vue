@@ -5,13 +5,13 @@
 
         <div class="card">
 
-            <p v-if="userError">作者資料載入失敗!</p>
-
-            <template v-else>
-
-                <p v-if="!userData">作者資料載入中...</p>
-
-                <div v-else class="row g-0">
+            <template v-if="userError">
+                <div class="card-body">
+                    <p>作者資料載入失敗!</p>
+                </div>
+            </template>
+            <template v-else-if="userData">
+                <div class="row g-0">
                     <div class="col-md-2">
                         <img :src="userData.image" alt="avator" class="img-fluid rounded-start">
                     </div>
@@ -24,32 +24,37 @@
                     </div>
                 </div>
             </template>
+            <template v-else>
+                <div class="card-body">
+                    <p>Loading...</p>
+                </div>
+            </template>
+
         </div>
 
         <div v-if="userData" class="card mt-2">
             <div class="card-body">
-                <h4 class="mb-4">Other Posts</h4>
+                <h4 class="mb-4">This Anthor's Posts</h4>
 
-                <p v-if="userData.customPostsError">文章資料載入失敗</p>
-
+                <template v-if="userData.customPostsError">
+                    <p>文章資料載入失敗!</p>
+                </template>
+                <template v-else-if="userData.customPosts">
+                    <span v-if="userData.customPosts.length <= 0">沒有文章資料</span>
+                    <ul v-else>
+                        <li v-for="(post, postIndex) in userData.customPosts" :key="postIndex">
+                            
+                            <template v-if="post.id === props.postId">
+                                {{ post.title }} <span class="text-info">(This Post)</span>
+                            </template>
+                            <template v-else>
+                                <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
+                            </template>
+                        </li>
+                    </ul>
+                </template>
                 <template v-else>
-
-                    <p v-if="!userData.customPosts">文章資料載入中...</p>
-
-                    <template v-else>
-                        <span v-if="userData.customPosts && userData.customPosts.length <= 0">沒有文章資料</span>
-                        <ul v-if="userData.customPosts && userData.customPosts.length > 0">
-                            <li v-for="(post, postIndex) in userData.customPosts" :key="postIndex">
-                                
-                                <template v-if="post.id === props.postId">
-                                    {{ post.title }} <span class="text-info">(This Post)</span>
-                                </template>
-                                <template v-else>
-                                    <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
-                                </template>
-                            </li>
-                        </ul>
-                    </template>
+                    <p>Loading...</p>
                 </template>
 
             </div>

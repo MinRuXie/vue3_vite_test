@@ -2,15 +2,12 @@
 
     <div class="post-detail-view">
 
-
-        <p v-if="postError">文章資料載入失敗</p>
-
-        <template v-else>
-            <p v-if="!postData">文章資料載入中...</p>
-            
+        <template v-if="postError">
+            <p>文章資料載入失敗!</p>
+        </template>
+        <template v-else-if="postData">
             <!-- 文章內容 -->
-            <article v-else>
-
+            <article>
                 <header class="post-header">
                     <h1>{{ postData.title }}</h1>
 
@@ -40,13 +37,12 @@
                 <PostDetailComments 
                     :postId="postData.id"
                 />
-            </article>
-
+                </article>
         </template>
-
- 
-
-        
+        <template v-else>
+            <p>Loading...</p>
+        </template>
+  
      
     </div>
 
