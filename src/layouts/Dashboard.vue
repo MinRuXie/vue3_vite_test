@@ -3,6 +3,11 @@
     <div class="dashboard">
         <div class="container">
             <div class="row">
+                <!-- 使用 自定義i18n插件 方法 1 -->
+                <!-- <h1>{{ $translate('greetings.hello') }}</h1> -->
+                <!-- 使用 自定義i18n插件 方法 2: -->
+                <h1>{{ i18n.greetings.hello }}</h1>
+
                 <h2>slot 練習</h2>
             </div>
             <div class="row">
@@ -84,6 +89,9 @@
 import { onMounted, ref, defineAsyncComponent  } from 'vue';
 import axios from 'axios';
 
+// 使用 自定義i18n插件 方法 2
+import { inject } from 'vue';
+const i18n = inject('i18n');
 
 
 // components
