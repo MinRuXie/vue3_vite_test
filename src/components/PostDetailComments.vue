@@ -2,17 +2,20 @@
 
     <section class="comment-section">
         <h3>Comments</h3>
-        <template v-if="!commentsLoadingStatus">
-            評論資料載入中...
-        </template>
-        <template v-if="commentsLoadingStatus">
-            <div class="card">
-                <div class="card-body">
-                    <ul class="list-group list-group-flush comment-wrap">
-                        <template v-if="commentsData.length <= 0">
-                            目前沒有評論
-                        </template>
-                        <template v-if="commentsData.length > 0">
+
+        <div class="card">
+            <div class="card-body">
+
+                <ul class="list-group list-group-flush comment-wrap">
+                    
+                    <li v-if="commentsError" class="list-group-item">評論載入失敗!</li>
+
+                    <template v-else>
+                        <li v-if="!commentsData" class="list-group-item">載入評論中...</li>
+                        
+                        <template v-else>
+                            <li v-if="commentsData.length <= 0" class="list-group-item">目前沒有評論</li>
+
                             <li class="list-group-item" 
                                 v-for="(item, index) in commentsData" :key="index">
 
@@ -30,11 +33,13 @@
 
                             </li>
                         </template>
-                    </ul>
-                </div>
+                    </template>
+                    
+                </ul>
             </div>
-        </template>
-        
+        </div>
+
+
         <div class="card mt-2">
             <div class="card-body">
                 <h4>我要評論</h4>
@@ -104,7 +109,7 @@ const statusAdding = ref(false);
 
 
 const commentsData = ref(null);  // 評論資料
-const commentsLoadingStatus = ref(false); // 評論資料載入狀態
+const commentsError = ref(null);  // 評論資料載入失敗
 
 
 // 取得評論資料
@@ -118,13 +123,10 @@ function getCommentsData() {
         const data = response.data;
 
         commentsData.value = data.comments;
-        commentsLoadingStatus.value = true;
-
-        console.log('commentsData.value', commentsData.value);
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-        alert('取得失敗');
+        commentsError.value = error;
     });
 }
 

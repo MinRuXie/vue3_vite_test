@@ -90,7 +90,7 @@ watch(
 
 
 
-// 取得資料
+// 取得文章資料
 function getPostsData() {
     axios({
         method: 'get',

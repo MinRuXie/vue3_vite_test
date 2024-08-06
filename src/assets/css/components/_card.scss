@@ -1,0 +1,13 @@
+
+.card {
+
+
+    &.fancy-border {
+        margin-bottom: 1rem;
+        border-width: 20px;
+        border-image: linear-gradient(315deg, #42d392 25%, #647eff) 30;
+    }
+        
+        
+}
+

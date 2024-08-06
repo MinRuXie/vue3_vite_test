@@ -1,14 +1,22 @@
 <template>
 
-    <div class="card">
+    <div class="card fancy-border">
         <div class="card-body">
 
-            <h2>{{ title }}列表</h2>
-
+            <!-- Header -->
+            <header>
+                <slot name="header"></slot>
+            </header>
             
+            <!-- Body -->
+            <main>
+                <slot name="body"></slot>
+            </main>
 
-            <router-link :to="`/${routeName}/list/1`" class="icon-link">More</router-link>
-
+            <!-- Footer -->
+            <footer>
+                <slot name="footer"></slot>
+            </footer>
 
         </div>
     </div>
@@ -17,12 +25,6 @@
 </template>
 
 <script setup>
-
-const props = defineProps({
-    title: String,
-    routeName: String,
-})
-
 
 
 </script>

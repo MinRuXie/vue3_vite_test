@@ -2,12 +2,16 @@
 
     <section class="author-section">
         <h3>Author</h3>
-        <template v-if="!userLoadingStatus">
-            作者資料載入中...
-        </template>
-        <template v-if="userLoadingStatus">
-            <div class="card">
-                <div class="row g-0">
+
+        <div class="card">
+
+            <p v-if="userError">作者資料載入失敗!</p>
+
+            <template v-else>
+
+                <p v-if="!userData">作者資料載入中...</p>
+
+                <div v-else class="row g-0">
                     <div class="col-md-2">
                         <img :src="userData.image" alt="avator" class="img-fluid rounded-start">
                     </div>
@@ -19,15 +23,20 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mt-2">
-                <div class="card-body">
-                    <h4 class="mb-4">Other Posts</h4>
-                    
-                    <template v-if="userData.customPostsLoading">
-                        文章資料載入中...
-                    </template>
-                    <template v-if="!userData.customPostsLoading">
+            </template>
+        </div>
+
+        <div v-if="userData" class="card mt-2">
+            <div class="card-body">
+                <h4 class="mb-4">Other Posts</h4>
+
+                <p v-if="userData.customPostsError">文章資料載入失敗</p>
+
+                <template v-else>
+
+                    <p v-if="!userData.customPosts">文章資料載入中...</p>
+
+                    <template v-else>
                         <span v-if="userData.customPosts && userData.customPosts.length <= 0">沒有文章資料</span>
                         <ul v-if="userData.customPosts && userData.customPosts.length > 0">
                             <li v-for="(post, postIndex) in userData.customPosts" :key="postIndex">
@@ -41,9 +50,11 @@
                             </li>
                         </ul>
                     </template>
-                </div>
+                </template>
+
             </div>
-        </template>
+        </div>
+
     </section>
 
 </template>
@@ -59,7 +70,8 @@ const props = defineProps({
 
 
 const userData = ref(null);  // 作者資料
-const userLoadingStatus = ref(false); // 作者資料載入狀態
+const userError = ref(null);  // 作者資料載入失敗
+
 
 // 取得作者資料
 async function getUserData() {
@@ -72,13 +84,13 @@ async function getUserData() {
         const data = response.data;
 
         userData.value = data;
-        userLoadingStatus.value = true;
+        // userLoadingStatus.value = true;
 
         // console.log('userData.value', userData.value);
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-        alert('取得失敗');
+        userError.value = error;
     });
 }
 
@@ -95,11 +107,11 @@ async function getPostsOfUser(user) {
         
         // 將文章資料塞入對應的作者中
         user['customPosts'] = data.posts;
-        user['customPostsLoading'] = false;
+        // user['customPostsLoading'] = false;
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-
+        user['customPostsError'] = error;
     });
 }
 

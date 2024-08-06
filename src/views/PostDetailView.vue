@@ -1,44 +1,52 @@
 <template>
 
-    <div class="post-detai-view">
-    
-        <article v-if="!postsLoadingStatus">
-            文章資料載入中...
-        </article>
+    <div class="post-detail-view">
 
-        <!-- 文章內容 -->
-        <article v-if="postsLoadingStatus">
 
-            <header class="post-header">
-                <h1>{{ postData.title }}</h1>
+        <p v-if="postError">文章資料載入失敗</p>
 
-                <!-- post tags -->
-                <PostTagsList
-                    :postTags="postData.tags"
+        <template v-else>
+            <p v-if="!postData">文章資料載入中...</p>
+            
+            <!-- 文章內容 -->
+            <article v-else>
+
+                <header class="post-header">
+                    <h1>{{ postData.title }}</h1>
+
+                    <!-- post tags -->
+                    <PostTagsList
+                        :postTags="postData.tags"
+                    />
+                </header>
+
+                <div class="post-content">
+                    {{ postData.body }}
+                </div>
+
+                <footer class="post-footer">
+                    <span>likes: {{ postData.reactions.likes }}</span>
+                    <span>dislikes: {{ postData.reactions.dislikes }}</span>
+                    <span>views: {{ postData.views }}</span>
+                </footer>
+
+                <!-- 作者 -->
+                <PostDetailAuthor
+                    :userId="postData.userId"
+                    :postId="postData.id"
                 />
-            </header>
 
-            <div class="post-content">
-                {{ postData.body }}
-            </div>
+                <!-- 評論 -->
+                <PostDetailComments 
+                    :postId="postData.id"
+                />
+            </article>
 
-            <footer class="post-footer">
-                <span>likes: {{ postData.reactions.likes }}</span>
-                <span>dislikes: {{ postData.reactions.dislikes }}</span>
-                <span>views: {{ postData.views }}</span>
-            </footer>
+        </template>
 
-            <!-- 作者 -->
-            <PostDetailAuthor
-                :userId="postData.userId"
-                :postId="postData.id"
-            />
+ 
 
-            <!-- 評論 -->
-            <PostDetailComments 
-                :postId="postData.id"
-            />
-        </article>
+        
      
     </div>
 
@@ -59,7 +67,8 @@ const route = useRoute();  // 路由
 
 const postId = ref(route.params.id); // 路由參數 id
 const postData = ref(null);  // 文章資料
-const postsLoadingStatus = ref(false); // 文章資料載入狀態
+const postError = ref(null);  // 文章資料載入失敗
+// const postsLoadingStatus = ref(false); // 文章資料載入狀態
 
 
 
@@ -74,14 +83,16 @@ function getPostData() {
         const data = response.data;
 
         postData.value = data;
-        postsLoadingStatus.value = true;
+        // postsLoadingStatus.value = true;
 
         // console.log('data', data);
         console.log('postData.value', postData.value);
     })
     .catch(function (error) {
         console.log('取得失敗', error);
-        alert('取得失敗');
+        // alert('取得失敗');
+
+        postError.value = error;
     });
 }
 
