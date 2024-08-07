@@ -1,104 +1,107 @@
 <template>
-    <h2>修改帳戶資訊</h2>
 
-    <section>
-        <header class="section-header">
-            <h4>帳戶資訊</h4>
-            <router-link to="/admin/home/account" class="btn btn-primary">返回</router-link>
-        </header>
-        
-        <div class="card">
-            <div class="card-body">
+    <div class="user-info">
 
-                <!-- 1. Replace <form> with <Form /> 
-                    but remove both the .prevent modifier and the novalidate attribute. -->
-                <Form @submit="onSubmit">
-                    
-                    <fieldset>
-                        <label for="firstName" class="required">first name</label>
+        <h2>修改帳戶資訊</h2>
 
-                        <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
-                        <Field type="text" 
-                            id="firstName"
-                            name="firstName"
-                            class="form-control"
-                            placeholder="請輸入姓氏"
-                            v-model="formData.firstName" 
-                            :rules="validateRequired" 
-                        />
-                        <!-- 3. Add the <ErrorMessage /> component to your template, 
-                            passing a name prop that matches the <Field /> name prop -->
-                        <ErrorMessage name="firstName" />
-                    </fieldset>
+        <section>
+            <header class="section-header">
+                <h4>帳戶資訊</h4>
+                <router-link to="/admin/home/account" class="btn btn-primary">返回</router-link>
+            </header>
+            
+            <div class="card">
+                <div class="card-body">
 
-                    <fieldset>
-                        <label for="lastName" class="required">last name</label>
+                    <!-- 1. Replace <form> with <Form /> 
+                        but remove both the .prevent modifier and the novalidate attribute. -->
+                    <Form @submit="onSubmit">
+                        
+                        <fieldset>
+                            <label for="firstName" class="required">first name</label>
 
-                        <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
-                        <Field type="text" 
-                            id="lastName"
-                            name="lastName"
-                            class="form-control"
-                            placeholder="請輸入姓名"
-                            v-model="formData.lastName" 
-                            :rules="validateRequired" 
-                        />
-                        <!-- 3. Add the <ErrorMessage /> component to your template, 
-                            passing a name prop that matches the <Field /> name prop -->
-                        <ErrorMessage name="lastName" />
-                    </fieldset>
+                            <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
+                            <Field type="text" 
+                                id="firstName"
+                                name="firstName"
+                                class="form-control"
+                                placeholder="請輸入姓氏"
+                                v-model="formData.firstName" 
+                                :rules="validateRequired" 
+                            />
+                            <!-- 3. Add the <ErrorMessage /> component to your template, 
+                                passing a name prop that matches the <Field /> name prop -->
+                            <ErrorMessage name="firstName" />
+                        </fieldset>
 
-                    <fieldset>
-                        <label for="gender" class="required">gender</label>
+                        <fieldset>
+                            <label for="lastName" class="required">last name</label>
 
-                        <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
-                        <Field as="select" 
-                            id="gender"
-                            name="gender"
-                            class="form-select"
-                            v-model="formData.gender" 
-                            :rules="validateRequired">
-                    
-                            <option value="male">male</option>
-                            <option value="female">female</option>
-                        </Field>
-                        <!-- 3. Add the <ErrorMessage /> component to your template, 
-                            passing a name prop that matches the <Field /> name prop -->
-                        <ErrorMessage name="gender" />
-                    </fieldset>
+                            <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
+                            <Field type="text" 
+                                id="lastName"
+                                name="lastName"
+                                class="form-control"
+                                placeholder="請輸入姓名"
+                                v-model="formData.lastName" 
+                                :rules="validateRequired" 
+                            />
+                            <!-- 3. Add the <ErrorMessage /> component to your template, 
+                                passing a name prop that matches the <Field /> name prop -->
+                            <ErrorMessage name="lastName" />
+                        </fieldset>
 
-                    <fieldset>
-                        <label for="email" class="required">email</label>
+                        <fieldset>
+                            <label for="gender" class="required">gender</label>
 
-                        <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
-                        <Field type="text" 
-                            id="email"
-                            name="email"
-                            class="form-control"
-                            placeholder="請輸入email"
-                            v-model="formData.email" 
-                            :rules="validateRequired" 
-                        />
-                        <!-- 3. Add the <ErrorMessage /> component to your template, 
-                            passing a name prop that matches the <Field /> name prop -->
-                        <ErrorMessage name="email" />
-                    </fieldset>
+                            <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
+                            <Field as="select" 
+                                id="gender"
+                                name="gender"
+                                class="form-select"
+                                v-model="formData.gender" 
+                                :rules="validateRequired">
+                        
+                                <option value="male">male</option>
+                                <option value="female">female</option>
+                            </Field>
+                            <!-- 3. Add the <ErrorMessage /> component to your template, 
+                                passing a name prop that matches the <Field /> name prop -->
+                            <ErrorMessage name="gender" />
+                        </fieldset>
 
-                    <footer class="form-footer">
-                        <span v-if="editingStatus">儲存中...請稍後</span>
-                        <button class="btn btn-primary" :disabled="editingStatus">儲存</button>
-                    </footer>
-                </Form>
+                        <fieldset>
+                            <label for="email" class="required">email</label>
 
+                            <!-- 2. Replace <input> with <Field /> while keeping the same attributes. -->
+                            <Field type="text" 
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="請輸入email"
+                                v-model="formData.email" 
+                                :rules="validateRequired" 
+                            />
+                            <!-- 3. Add the <ErrorMessage /> component to your template, 
+                                passing a name prop that matches the <Field /> name prop -->
+                            <ErrorMessage name="email" />
+                        </fieldset>
+
+                        <footer class="form-footer">
+                            <span v-if="editingStatus">儲存中...請稍後</span>
+                            <button class="btn btn-primary" :disabled="editingStatus">儲存</button>
+                        </footer>
+                    </Form>
+
+                </div>
             </div>
-        </div>
 
-        
-    </section>
+            
+        </section>
 
-    <pre>{{ formData }}</pre>
+        <pre>{{ formData }}</pre>
     
-
+    </div>
 
 </template>
 

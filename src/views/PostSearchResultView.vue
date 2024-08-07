@@ -77,6 +77,11 @@ watchEffect(()=>{
     keyword.value = route.params.keyword;
     currentPage.value = +route.params.page;
 
+    // 清空原資料
+    postsData.value = null;
+    postsCount.value = null;
+    postsError.value = null;
+
     getPostsData();  // 取得資料
 })
 

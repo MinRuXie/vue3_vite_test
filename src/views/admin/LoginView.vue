@@ -1,6 +1,5 @@
 <template>
     
-
     <div class="login">
         <div class="container">
             <div class="row">
@@ -65,7 +64,6 @@
         </div>
     </div>
     
-
 </template>
 
 <script setup>

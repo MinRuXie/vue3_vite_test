@@ -11,20 +11,22 @@
             <div class="sort-wrap">
                 <span>Sort By:</span>
                 <fieldset>
-                    <input type="radio" class="btn-check" name="options-sort" id="option5" autocomplete="off" value="asc" v-model="sortOrder" @change="getPostsData">
+                    <input type="radio" class="btn-check" name="options-sort" id="option5" autocomplete="off" value="asc" v-model="sortOrder" @change="sortPostsData">
                     <label class="btn" for="option5">A-Z</label>
                 </fieldset>
                 <fieldset>
-                    <input type="radio" class="btn-check" name="options-sort" id="option6" autocomplete="off" value="desc" v-model="sortOrder" @change="getPostsData">
+                    <input type="radio" class="btn-check" name="options-sort" id="option6" autocomplete="off" value="desc" v-model="sortOrder" @change="sortPostsData">
                     <label class="btn" for="option6">Z-A</label>
                 </fieldset>
             </div>
-            
+
+
             
             <!-- posts list -->
             <PostList 
                 :postsData="postsData"
             />
+
             
             <!-- paginative -->
             <ListPagination
@@ -56,8 +58,6 @@ import ListPagination from '@/components/ListPagination.vue';
 
 const route = useRoute();  // 路由
 
-// 元素
-// const refPavination = ref(null);
 
 
 // 文章相關
@@ -88,15 +88,29 @@ watch(
         // react to route changes...
         currentPage.value = +newValue;
 
+        // 清空原資料
+        postsData.value = null;
+        postsCount.value = null;
+        postsError.value = null;
+
         getPostsData();  // 取得資料
     }
 )
 
 
+function sortPostsData() {
+    // 清空原資料
+    postsData.value = null;
+    postsCount.value = null;
+    postsError.value = null;
+    
+    getPostsData();  // 取得資料
+}
+
 
 // 取得文章資料
-function getPostsData() {
-    axios({
+async function getPostsData() {
+    return axios({
         method: 'get',
         // url: `https://dummyjson.com/posts?limit=${postsCountOfPage.value}&skip=${currentStartIndex.value}`,
         url: `https://dummyjson.com/posts?limit=${postsCountOfPage.value}&skip=${currentStartIndex.value}&sortBy=title&order=${sortOrder.value}`,
@@ -119,10 +133,10 @@ function getPostsData() {
 
 
 
-onMounted(()=>{
-    console.log('onMounted');
+onMounted(async ()=>{
+    // console.log('onMounted');
 
-    getPostsData();  // 取得資料
+    await getPostsData();  // 取得資料
 })
 
 

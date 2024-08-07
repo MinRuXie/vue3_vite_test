@@ -3,29 +3,36 @@
     <div class="post-view">
         <h2>Archive Result: {{ currentTag }}</h2>
 
-        <template v-if="postsError">
-            <p>文章資料載入失敗!</p>
-        </template>
-        <template v-else-if="postsData">
+            <template v-if="postsError">
+                <p>文章資料載入失敗!</p>
+            </template>
+            <template v-else-if="postsData">
 
-            <!-- posts list -->
-            <PostList 
-                :postsData="postsData"
-            />
-            
-            <!-- paginative -->
-            <ListPagination
-                :dataCount="postsCount"
-                :dataCountOfPage="postsCountOfPage"
-                :currentPage="currentPage"
-                :currentStartIndex="currentStartIndex"
-                :preUrl="`/post/category/${currentTag}`"
-            />
+                <!-- <Transition name="list">
+                    <PostList 
+                        :postsData="postsData"
+                        :key="postsData"
+                    />
+                </Transition> -->
 
-        </template>
-        <template v-else>
-            <p>Loading...</p>
-        </template>
+                <!-- posts list -->
+                <PostList 
+                    :postsData="postsData"
+                />
+                
+                <!-- paginative -->
+                <ListPagination
+                    :dataCount="postsCount"
+                    :dataCountOfPage="postsCountOfPage"
+                    :currentPage="currentPage"
+                    :currentStartIndex="currentStartIndex"
+                    :preUrl="`/post/category/${currentTag}`"
+                />
+
+            </template>
+            <template v-else>
+                <p>Loading...</p>
+            </template>
 
     </div>
 
@@ -67,6 +74,11 @@ const postsError = ref(null);   // 文章資料 (API response) Error
 watchEffect(()=>{
     currentTag.value = route.params.tag;
     currentPage.value = +route.params.page;
+
+    // 清空原資料
+    postsData.value = null;
+    postsCount.value = null;
+    postsError.value = null;
 
     getPostsOfTag();  // 取得資料
 })

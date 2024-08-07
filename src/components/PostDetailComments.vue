@@ -33,19 +33,6 @@
                     <p>Loading...</p>
                 </template>
 
-                <ul class="list-group list-group-flush comment-wrap">
-                    
-                    <li v-if="commentsError" class="list-group-item">評論載入失敗!</li>
-
-                    <template v-else>
-                        <li v-if="!commentsData" class="list-group-item">載入評論中...</li>
-                        
-                        <template v-else>
-                            
-                        </template>
-                    </template>
-                    
-                </ul>
             </div>
         </div>
 
@@ -71,7 +58,10 @@
                                 class="form-control" 
                                 v-model="formData.body"
                                 :rules="validateRequired" 
+                                mode="aggressive"
                             />
+
+                            <!-- Try passing either `passive`, `aggressive`, `lazy` or `eager` -->
                             
                             <ErrorMessage name="description" />
                         </fieldset>

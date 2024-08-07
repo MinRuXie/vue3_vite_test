@@ -127,8 +127,8 @@ watch(
   }
 )
 
-onMounted(async ()=>{
-    getData()
+onMounted(()=>{
+    getData();
 })
 
 </script>

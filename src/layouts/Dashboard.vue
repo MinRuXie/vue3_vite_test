@@ -77,11 +77,26 @@
                 </div>
             </div>
         </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Test -->
+                    <button @click="flag = !flag">顯示 Parent 組件</button>
+                    <!-- Parent 組件 -->
+                    <Transition>
+                        <TheParent v-if="flag" />
+                    </Transition>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+
     </div>
 
-
-    <!-- Parent 組件 -->
-    <TheParent />
 
 </template>
 
@@ -121,7 +136,7 @@ import NewsCard from '@/components/NewsCard.vue';
 // )
 
 
-
+const flag = ref(false);
 
 
 const itemCount = ref(5);
@@ -135,8 +150,8 @@ const usersError = ref(null);  // 使用者資料載入失敗
 
 
 // 取得文章資料
-function getPostsData() {
-    axios({
+async function getPostsData() {
+    return axios({
         method: 'get',
         url: `https://dummyjson.com/posts?limit=${itemCount.value}&skip=0`,
     })
@@ -154,8 +169,8 @@ function getPostsData() {
 
 
 // 取得 使用者資料
-function getUserData() {
-    axios({
+async function getUserData() {
+    return axios({
         method: 'get',
         url: `https://dummyjson.com/users?limit=${itemCount.value}&skip=0`,
     })
@@ -172,9 +187,9 @@ function getUserData() {
 }
 
 
-onMounted(()=>{
-    getPostsData();
-    getUserData();
+onMounted(async ()=>{
+    await getPostsData();
+    await getUserData();
 })
 
 

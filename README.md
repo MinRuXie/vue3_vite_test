@@ -10,6 +10,53 @@
     * [Vue3 如何用 defineModel 實作 props/ emit 的父子元件傳值，讓傳值變得更方便簡單](https://muki.tw/vmodel-definemodel-props-emit/#google_vignette)
 
 
+## 組件結構
+* `TransitionRouterView` 下的組件必須只有一個根節點
+```
+App (root)
+|- AppNav (component)
+|
+|- TransitionRouterView (layout)
+    |- Dashboard (layout): /
+    |
+    |- PostIndex (layout): /post
+    |   |- TransitionRouterView (layout)
+    |       |- PostView (view): /post/list/:page
+    |       |- PostDetailView (view): /post/detail/:id
+    |       |- PostSearchResultView (view): /post/search/:keyword/:page
+    |       |- PostArchiveView (view): /post/category/:tag/:page
+    |
+    |- AuthorIndex (layout): /author
+    |       |- TransitionRouterView (layout)
+    |           |- AuthorView (view): /authorlist/:page
+    |
+    |- AdminIndex (layout): /admin
+    |       |- TransitionRouterView (layout)
+    |           |- LoginView (view): /admin/login
+    |           |- UserInfoIndex (layout): /admin/home
+    |           |- TransitionRouterView (layout)
+    |               |- UserInfoView (view): /admin/home/account
+    |               |- UserInfoModifyView (view): /admin/home/account-modify
+    |
+    |- NotFound (layout): /:pathMatch(.*)*
+    |
+
+
+
+
+
+        
+
+
+
+
+
+```
+
+
+
+
+
 
 ## API 結果模板
 ```html

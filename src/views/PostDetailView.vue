@@ -42,8 +42,7 @@
         <template v-else>
             <p>Loading...</p>
         </template>
-  
-     
+    
     </div>
 
 
@@ -69,7 +68,7 @@ const postError = ref(null);  // 文章資料載入失敗
 
 
 // 取得文章資料
-function getPostData() {
+async function getPostData() {
     return axios({
         method: 'get',
         url: `https://dummyjson.com/posts/${postId.value}`,
@@ -113,7 +112,7 @@ watch(
 
 
 onMounted(()=>{
-    console.log('onMounted');
+    // console.log('onMounted');
 
     getData();  // 取得資料
 })

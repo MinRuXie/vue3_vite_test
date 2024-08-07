@@ -1,22 +1,22 @@
 <template>
 
-    
 
     <ol class="list-group list-group-numbered">
-        <li v-for="(post, postIndex) in props.postsData" :key="postIndex"
+        <li v-for="(post, postIndex) in props.postsData" :key="post"
             class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">
-                    <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">
+                        <router-link :to="`/post/detail/${post.id}`">{{ post.title }}</router-link>
+                    </div>
                 </div>
-            </div>
 
-            <!-- post tags -->
-            <PostTagsList
-                :postTags="post.tags"
-            />
+                <!-- post tags -->
+                <PostTagsList
+                    :postTags="post.tags"
+                />
         </li>
     </ol>
+
 
 </template>
 <script setup>

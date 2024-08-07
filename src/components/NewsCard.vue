@@ -19,7 +19,6 @@
         
     </div>
 
-
 </template>
 
 <script setup>
